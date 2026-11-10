@@ -13,8 +13,8 @@ const SETTINGS = {
   deliveryTimeEn: "3 weeks",
 
   // نص شريط العروض اللي فوق العنوان. لو عايز تخفيه خالص اكتب "" بس
-  offerBar: "الحجز مفتوح دلوقتي على عروض الكويت",
-  offerBarEn: "Pre-orders are open on current Kuwait offers",
+  offerBar: "الحجز مفتوح دلوقتي على عروض الخليج",
+  offerBarEn: "Pre-orders are open on current Gulf offers",
 
   // لينكات السوشيال
   instagram: "#",
@@ -50,7 +50,7 @@ const TEXT = {
     toLight: "الوضع العادي"
   },
   en: {
-    title: "Teeb | Original perfumes from Kuwait below market price",
+    title: "Teeb | Original perfumes from the Gulf below market price",
     order: "Order on WhatsApp",
     notify: "Notify me",
     available: "Pre-order open",
