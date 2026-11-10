@@ -17,15 +17,6 @@
 
 const PRODUCTS = [
   {
-<<<<<<< HEAD
-    name: "بكج المسك مع بخاخ مسك الجسم",
-    nameEn: "Musk Set with Body Musk Spray",
-    description: "من عبدالصمد القرشي:\nمسك الختام\nمسك الجسم (بخاخ 30 مل)\nمسك رنة خلخال",
-    descriptionEn: "By Abdul Samad Al Qurashi:\nAl Khitam Musk\nBody Musk (30 ml spray)\nRanet Khalkhal Musk",
-    size: "3 قطع",
-    sizeEn: "3 pieces",
-    price: 0,
-=======
     name: "مسك الختام",
     nameEn: "",
     description: "عطر من عبدالصمد القرشي",
@@ -39,27 +30,13 @@ const PRODUCTS = [
     image: "images/products/perfume-mwas82r4.jpg"
   },
   {
-    name: "عطر تجريبي 1",
-    nameEn: "Sample Perfume 1",
-    description: "عطر من عبدالصمد القرشي",
-    descriptionEn: "Abdul Samad Al Qurashi perfume",
-    size: "100 مل",
-    sizeEn: "100 ml",
-    price: 1850,
-    oldPrice: 2400,
-    offer: true,
-    available: true,
-    image: ""
-  },
-  {
-    name: "عطر تجريبي 2",
-    nameEn: "Sample Perfume 2",
-    description: "عطر من عبدالصمد القرشي",
-    descriptionEn: "Abdul Samad Al Qurashi perfume",
-    size: "75 مل",
-    sizeEn: "75 ml",
-    price: 2200,
->>>>>>> 1b098fe7ae59ab89e166bdbecb92b3c57c163e27
+    name: "بكج المسك مع بخاخ مسك الجسم",
+    nameEn: "Musk Set with Body Musk Spray",
+    description: "من عبدالصمد القرشي:\nمسك الختام\nمسك الجسم (بخاخ 30 مل)\nمسك رنة خلخال",
+    descriptionEn: "By Abdul Samad Al Qurashi:\nAl Khitam Musk\nBody Musk (30 ml spray)\nRanet Khalkhal Musk",
+    size: "3 قطع",
+    sizeEn: "3 pieces",
+    price: 0,
     oldPrice: 0,
     offer: false,
     available: true,
