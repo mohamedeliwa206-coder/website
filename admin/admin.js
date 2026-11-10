@@ -505,8 +505,9 @@ function renderProducts() {
     info.appendChild(el("strong", "item-name", p.name || "(من غير اسم)"));
     if (p.size) info.appendChild(el("span", "item-size", p.size));
     const prices = el("div", "item-prices");
-    prices.appendChild(el("span", "item-price", formatPrice(p.price)));
-    if (p.oldPrice > p.price) prices.appendChild(el("del", "item-old", formatPrice(p.oldPrice)));
+    if (p.price > 0) prices.appendChild(el("span", "item-price", formatPrice(p.price)));
+    else prices.appendChild(el("span", "item-noprice", "من غير سعر (هيظهر «السعر قريبًا»)"));
+    if (p.price > 0 && p.oldPrice > p.price) prices.appendChild(el("del", "item-old", formatPrice(p.oldPrice)));
     info.appendChild(prices);
     item.appendChild(info);
 
@@ -663,9 +664,9 @@ form.addEventListener("submit", function (event) {
   const oldPrice = readNumber(values.oldPrice);
 
   if (!name) return showEditorMessage("اكتب اسم العطر.");
-  if (isNaN(price) || price <= 0) return showEditorMessage("اكتب السعر بالأرقام بس، زي 1850.");
+  if (isNaN(price)) return showEditorMessage("اكتب السعر بالأرقام بس، زي 1850. أو سيبه فاضي لو لسه مش عارفه.");
   if (isNaN(oldPrice)) return showEditorMessage("السعر قبل الخصم لازم يبقى أرقام بس، أو سيبه فاضي.");
-  if (oldPrice > 0 && oldPrice <= price) {
+  if (oldPrice > 0 && price > 0 && oldPrice <= price) {
     return showEditorMessage("السعر قبل الخصم لازم يبقى أكبر من السعر الحالي، أو سيبه فاضي لو مفيش خصم.");
   }
 

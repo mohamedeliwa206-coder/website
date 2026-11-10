@@ -123,12 +123,13 @@ label { display: block; font-weight: 600; font-size: .92rem; }
 label small { font-weight: 400; color: var(--muted); }
 .req { color: var(--red); }
 
-input:not([type="checkbox"]):not([type="file"]) {
+input:not([type="checkbox"]):not([type="file"]), textarea {
   display: block; width: 100%; margin-top: 4px;
   min-height: 44px; padding: 8px 12px;
   background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
 }
-input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px var(--gold-soft); }
+textarea { font: inherit; color: inherit; line-height: 1.6; resize: vertical; }
+input:focus, textarea:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px var(--gold-soft); }
 
 .grid2 { display: grid; gap: 14px; }
 @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } }
@@ -193,6 +194,7 @@ input:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px va
 .item-prices { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 .item-price { font-weight: 800; color: var(--gold-dark); }
 .item-old { color: var(--muted); font-size: .85rem; }
+.item-noprice { color: var(--red); font-size: .85rem; font-weight: 700; }
 
 .toggles { grid-area: toggles; display: flex; gap: 8px; flex-wrap: wrap; }
 .chip {

@@ -472,6 +472,7 @@ section[id] { scroll-margin-top: var(--header-h); }
   color: var(--muted);
   font-size: .82rem;
   line-height: 1.55;
+  white-space: pre-line; /* كل سطر في الوصف يظهر في سطر لوحده (زي محتويات البكج) */
 }
 
 /* السعر والسعر القديم */
@@ -485,6 +486,11 @@ section[id] { scroll-margin-top: var(--header-h); }
 .price {
   font-size: 1.15rem;
   font-weight: 800;
+}
+/* لو لسه مفيش سعر: "السعر قريبًا" بخط أصغر */
+.price.price-soon {
+  font-size: .95rem;
+  color: var(--gold-dark);
 }
 .old-price {
   color: var(--muted);

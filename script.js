@@ -23,6 +23,8 @@ const TEXT = {
     waGeneral: "السلام عليكم، عندي سؤال عن العطور",
     waOrder: function (item, price) { return "السلام عليكم، ممكن أحجز:\n" + item + "\nالسعر: " + price; },
     waNotify: function (item) { return "السلام عليكم، ممكن تبلّغني لما يتوفر " + item + "؟"; },
+    priceSoon: "السعر قريبًا",
+    waAsk: function (item) { return "السلام عليكم، ممكن أعرف سعر:\n" + item; },
     fileError: "فيه غلطة في ملف products.js، غالبًا فاصلة أو علامة تنصيص ناقصة. راجع آخر تعديل عملته.",
     empty: "مفيش عطور متاحة دلوقتي، تابعنا علشان تعرف العروض الجاية.",
     langButton: "EN",
@@ -42,6 +44,8 @@ const TEXT = {
     waGeneral: "Hello, I have a question about your perfumes",
     waOrder: function (item, price) { return "Hello, I'd like to pre-order:\n" + item + "\nPrice: " + price; },
     waNotify: function (item) { return "Hello, please let me know when " + item + " is available."; },
+    priceSoon: "Price coming soon",
+    waAsk: function (item) { return "Hello, could you tell me the price of:\n" + item; },
     fileError: "There is a mistake in products.js, probably a missing comma or quotation mark.",
     empty: "No perfumes available right now. Follow us to hear about the next offers.",
     langButton: "عربي",
@@ -162,9 +166,15 @@ function createCard(product) {
   if (description) body.appendChild(el("p", "card-desc", description));
 
   // --- السعر، والسعر القديم متشطب لو موجود ---
+  // لو لسه مفيش سعر (0 أو فاضي) بيظهر "السعر قريبًا"
+  const hasPrice = Number(product.price) > 0;
   const priceRow = el("div", "card-price");
-  priceRow.appendChild(el("span", "price", formatPrice(product.price)));
-  if (Number(product.oldPrice) > Number(product.price)) {
+  if (!hasPrice) {
+    priceRow.appendChild(el("span", "price price-soon", words.priceSoon));
+  } else {
+    priceRow.appendChild(el("span", "price", formatPrice(product.price)));
+  }
+  if (hasPrice && Number(product.oldPrice) > Number(product.price)) {
     const old = el("del", "old-price", formatPrice(product.oldPrice));
     old.setAttribute("aria-label", words.oldPrice + " " + formatPrice(product.oldPrice));
     priceRow.appendChild(old);
@@ -187,7 +197,8 @@ function createCard(product) {
 
   if (product.available) {
     button.classList.add("btn-wa");
-    button.href = whatsappLink(words.waOrder(item, formatPrice(product.price)));
+    // لو مفيش سعر لسه، الرسالة بتسأل عن السعر
+    button.href = whatsappLink(hasPrice ? words.waOrder(item, formatPrice(product.price)) : words.waAsk(item));
   } else {
     // لو المنتج نفد: العميل يقدر يطلب يتبلّغ لما يتوفر
     button.classList.add("btn-outline");
