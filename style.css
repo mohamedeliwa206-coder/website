@@ -416,7 +416,8 @@ section[id] { scroll-margin-top: var(--header-h); }
 /* مكان الصورة */
 .card-media {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1; /* مربع، زي صور إنستجرام */
+  overflow: hidden;    /* الصورة متكبّرش الإطار لو مش مربعة بالظبط */
   background: var(--media-bg);
 }
 .card-media img {

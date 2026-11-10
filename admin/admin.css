@@ -179,7 +179,7 @@ input:focus, textarea:focus { border-color: var(--gold); outline: none; box-shad
   border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px;
 }
 .thumb {
-  grid-area: thumb; width: 72px; aspect-ratio: 4 / 5; object-fit: cover;
+  grid-area: thumb; width: 72px; aspect-ratio: 1 / 1; object-fit: cover;
   border-radius: 10px; background: var(--gold-soft); display: block;
 }
 .thumb.is-empty, .preview-img.is-empty {
@@ -280,7 +280,7 @@ dialog::backdrop { background: rgba(20, 16, 12, .55); }
 .image-field { display: flex; gap: 16px; align-items: center; }
 .image-preview { flex: 0 0 auto; }
 .preview-img {
-  width: 110px; aspect-ratio: 4 / 5; object-fit: cover; display: block;
+  width: 110px; aspect-ratio: 1 / 1; object-fit: cover; display: block;
   border-radius: 12px; background: var(--gold-soft);
 }
 .preview-img.is-empty svg { width: 40px; height: auto; }

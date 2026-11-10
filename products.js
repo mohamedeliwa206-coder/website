@@ -40,7 +40,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
-    image: ""
+    image: "images/products/musk-set-with-body-musk-spray.jpg"
   },
   {
     name: "بكج التولة",
@@ -53,7 +53,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
-    image: ""
+    image: "images/products/tola-musk-set.jpg"
   },
   {
     name: "بكج المجموعة العربية",
@@ -66,7 +66,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
-    image: ""
+    image: "images/products/arabic-collection-set.jpg"
   },
   {
     name: "بكج العود والبخور",
@@ -79,7 +79,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
-    image: ""
+    image: "images/products/oud-incense-set.jpg"
   },
   {
     name: "بكج البودي عود",
@@ -92,7 +92,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
-    image: ""
+    image: "images/products/body-oud-set.jpg"
   },
   {
     name: "بكج بلو ستار وقرشي بلند",
@@ -105,6 +105,6 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
-    image: ""
+    image: "images/products/blue-star-qurashi-blend-set.jpg"
   },
 ];
