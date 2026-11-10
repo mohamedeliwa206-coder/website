@@ -17,19 +17,6 @@
 
 const PRODUCTS = [
   {
-    name: "مسك الختام",
-    nameEn: "",
-    description: "عطر من عبدالصمد القرشي",
-    descriptionEn: "Abdul Samad Al Qurashi perfume",
-    size: "100 مل",
-    sizeEn: "100 ml",
-    price: 7000,
-    oldPrice: 11000,
-    offer: true,
-    available: true,
-    image: "images/products/perfume-mwas82r4.jpg"
-  },
-  {
     name: "بكج المسك مع بخاخ مسك الجسم",
     nameEn: "Musk Set with Body Musk Spray",
     description: "من عبدالصمد القرشي:\nمسك الختام\nمسك الجسم (بخاخ 30 مل)\nمسك رنة خلخال",
