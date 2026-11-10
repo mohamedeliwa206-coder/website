@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- بيطبّق اللغة والوضع الليلي اللي الزائر اختارهم قبل كده، قبل ما الصفحة تظهر -->
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("lang") === "en") {
+          document.documentElement.lang = "en";
+          document.documentElement.dir = "ltr";
+        }
+        if (localStorage.getItem("theme") === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- ===== عنوان الصفحة ووصفها (بيظهروا في جوجل وفي تاب المتصفح) ===== -->
+  <title>طِيب | عطور أصلية من الكويت بسعر أقل من السوق</title>
+  <meta name="description" content="عطور وبكجات أصلية من الكويت بالحجز المسبق، بسعر أقل من السوق في مصر. كل قطعة معاها فاتورة الشراء، وبتعاينها قبل ما تدفع الباقي.">
+  <meta name="theme-color" content="#faf7f2">
+
+  <!-- ===== Open Graph: شكل اللينك لما تبعته على واتساب أو إنستجرام أو فيسبوك ===== -->
+  <!-- ملحوظة: بعد ما نرفع الموقع (الخطوة 6) هنغيّر مسار الصورة للينك الكامل، علشان واتساب محتاجه كده -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ar_EG">
+  <meta property="og:site_name" content="طِيب">
+  <meta property="og:title" content="طِيب | عطور أصلية من الكويت بسعر أقل من السوق">
+  <meta property="og:description" content="كل قطعة معاها فاتورة الشراء الكويتية، وبتعاينها قبل ما تدفع الباقي. احجز على واتساب.">
+  <meta property="og:image" content="images/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- ===== أيقونة الموقع اللي بتظهر في التاب (favicon) ===== -->
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+  <!-- ===== الخط (Cairo) من Google Fonts، بيدعم العربي والإنجليزي ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- ملف التنسيق (الألوان والخطوط وشكل الصفحة) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!--
+    ملحوظة عن اللغتين:
+    أي كلام في الصفحة مكتوب مرتين:
+      <span lang="ar">الكلام بالعربي</span>
+      <span lang="en">The text in English</span>
+    الموقع بيعرض النسخة اللي تناسب اللغة المختارة بس.
+    لو عدّلت جملة بالعربي، عدّل اللي جنبها بالإنجليزي كمان.
+  -->
+
+  <!-- =====================================================
+       1) الهيدر: اسم المتجر + الروابط + الزراير
+       ===================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <!-- اسم المتجر (اللوجو) -->
+      <a href="#" class="logo"><span lang="ar">طِيب</span><span lang="en">Teeb</span></a>
+
+      <!-- الروابط اللي بتنقل لأقسام الصفحة -->
+      <nav class="main-nav" aria-label="أقسام الموقع" data-aria-en="Site sections">
+        <a href="#products"><span lang="ar">العطور</span><span lang="en">Perfumes</span></a>
+        <a href="#how"><span lang="ar">إزاي تطلب</span><span lang="en">How to order</span></a>
+        <a href="#reviews"><span lang="ar">آراء العملاء</span><span lang="en">Reviews</span></a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- زرار اللغة (كلامه بيتغير من script.js) -->
+        <button type="button" class="icon-btn lang-btn" id="lang-toggle">EN</button>
+
+        <!-- زرار الوضع الليلي: قمر في الوضع العادي، وشمس في الوضع الليلي -->
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="الوضع الليلي">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 13.5A8.5 8.5 0 1 1 10.5 3.5a6.6 6.6 0 0 0 10 10Z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+
+        <!-- أيقونة واتساب (اللينك بيتحط لوحده من script.js) -->
+        <a class="header-wa" data-wa href="#" target="_blank" rel="noopener" aria-label="كلمنا على واتساب" data-aria-en="Chat with us on WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =====================================================
+         2) العنوان الرئيسي (أول حاجة الزائر بيشوفها)
+         ===================================================== -->
+    <section class="hero">
+      <div class="container">
+        <!-- شريط العروض: نصه بيتغير من أول script.js (offerBar و offerBarEn) -->
+        <p class="offer-bar" id="offer-bar">
+          <span class="offer-dot" aria-hidden="true"></span>
+          <span lang="ar" data-setting="offerBar">الحجز مفتوح دلوقتي على عروض الكويت</span>
+          <span lang="en" data-setting="offerBarEn">Pre-orders are open on current Kuwait offers</span>
+        </p>
+
+        <h1>
+          <span lang="ar">عطور أصلية من الكويت <span class="gold">بسعر أقل من السوق</span></span>
+          <span lang="en">Original perfumes from Kuwait <span class="gold">below market price</span></span>
+        </h1>
+        <p class="hero-sub">
+          <span lang="ar">كل قطعة معاها فاتورة الشراء، وبتعاينها قبل ما تدفع الباقي</span>
+          <span lang="en">Every piece comes with its purchase invoice, and you inspect it before paying the rest</span>
+        </p>
+        <a href="#products" class="btn btn-gold"><span lang="ar">تصفّح العطور</span><span lang="en">Browse perfumes</span></a>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         3) شريط الثقة: 3 مربعات
+         ===================================================== -->
+    <section class="trust" aria-label="ليه تطلب مننا" data-aria-en="Why order from us">
+      <div class="container trust-grid">
+
+        <div class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <!-- أيقونة فاتورة -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2v20l2.33-1.5L9.67 22 12 20.5l2.33 1.5 2.34-1.5L19 22V2l-2.33 1.5L14.33 2 12 3.5 9.67 2 7.33 3.5Z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+          </span>
+          <div lang="ar">
+            <h3>فاتورة كويتية لكل قطعة</h3>
+            <p>بنبعتلك صورة القطعة مع فاتورة شرائها من الكويت</p>
+          </div>
+          <div lang="en">
+            <h3>Kuwaiti invoice for every piece</h3>
+            <p>We send you a photo of the piece with its purchase invoice from Kuwait</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <!-- أيقونة عين (معاينة) -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </span>
+          <div lang="ar">
+            <h3>معاينة قبل الاستلام</h3>
+            <p>بتفتح وتعاين القطعة قبل ما تدفع الباقي للمندوب</p>
+          </div>
+          <div lang="en">
+            <h3>Inspect before you pay</h3>
+            <p>Open and check the piece before paying the rest to the courier</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <!-- أيقونة عربية شحن -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 17V5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h1.5"/><path d="M14 8h3.5l4.5 5v3a1 1 0 0 1-1 1h-1.5"/><path d="M9.5 17h5"/><circle cx="7" cy="17.5" r="2.2"/><circle cx="17" cy="17.5" r="2.2"/></svg>
+          </span>
+          <!-- المدة بتتغير من أول script.js (deliveryTime و deliveryTimeEn) -->
+          <div lang="ar">
+            <h3>تسليم خلال <span data-setting="deliveryTime">3 أسابيع</span></h3>
+            <p>وبنبعتلك صورة القطعة أول ما نشتريها</p>
+          </div>
+          <div lang="en">
+            <h3>Delivery within <span data-setting="deliveryTimeEn">3 weeks</span></h3>
+            <p>And we send you a photo of the piece as soon as we buy it</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================================================
+         4) العطور: الكروت بتتعمل لوحدها من ملف products.js
+         ===================================================== -->
+    <section id="products" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2><span lang="ar">العطور</span><span lang="en">Perfumes</span></h2>
+          <p>
+            <span lang="ar">اختار العطر اللي عاجبك ودوس «اطلب على واتساب»، وهتتفتحلك رسالة جاهزة فيها اسمه وسعره.</span>
+            <span lang="en">Pick a perfume and tap “Order on WhatsApp” to open a ready message with its name and price.</span>
+          </p>
+        </div>
+
+        <!-- هنا الكروت بتتحط أوتوماتيك، متكتبش حاجة جوه -->
+        <div class="products-grid" id="products-grid"></div>
+
+        <noscript><p class="products-msg">لازم تشغّل JavaScript في المتصفح علشان تظهر العطور.</p></noscript>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         5) إزاي تطلب: 4 خطوات (الأرقام بتتحط لوحدها)
+         ===================================================== -->
+    <section id="how" class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <h2><span lang="ar">إزاي تطلب</span><span lang="en">How to order</span></h2>
+          <p>
+            <span lang="ar">الحجز مسبق، وبنشتري القطعة مخصوص ليك من الكويت.</span>
+            <span lang="en">It’s a pre-order: we buy the piece in Kuwait especially for you.</span>
+          </p>
+        </div>
+
+        <ol class="steps">
+          <li class="step">
+            <div lang="ar">
+              <h3>اختار العطر</h3>
+              <p>دوس «اطلب على واتساب» تحت العطر اللي عاجبك، وهتتفتحلك رسالة جاهزة ابعتها لنا.</p>
+            </div>
+            <div lang="en">
+              <h3>Pick your perfume</h3>
+              <p>Tap “Order on WhatsApp” under the perfume you like, and send us the ready message.</p>
+            </div>
+          </li>
+          <li class="step">
+            <div lang="ar">
+              <h3>ادفع العربون</h3>
+              <p>ادفع عربون 50% من السعر بإنستاباي أو محفظة إلكترونية، علشان نثبّتلك الحجز.</p>
+            </div>
+            <div lang="en">
+              <h3>Pay the deposit</h3>
+              <p>Pay a 50% deposit via InstaPay or a mobile wallet to confirm your order.</p>
+            </div>
+          </li>
+          <li class="step">
+            <div lang="ar">
+              <h3>بنشتريها من الكويت</h3>
+              <p>بنشتري القطعة من المتجر الرسمي في الكويت، ونبعتلك صورتها مع الفاتورة الكويتية.</p>
+            </div>
+            <div lang="en">
+              <h3>We buy it in Kuwait</h3>
+              <p>We buy the piece from the official store in Kuwait and send you its photo with the Kuwaiti invoice.</p>
+            </div>
+          </li>
+          <li class="step">
+            <div lang="ar">
+              <h3>عاين واستلم</h3>
+              <p>شركة الشحن بتوصّلك القطعة، بتعاينها الأول وبعدين تدفع الباقي للمندوب.</p>
+            </div>
+            <div lang="en">
+              <h3>Inspect and receive</h3>
+              <p>The shipping company delivers it. You inspect it first, then pay the rest to the courier.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         6) آراء العملاء: سكرين شوتس من رسايل العملاء
+         ===================================================== -->
+    <section id="reviews" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2><span lang="ar">آراء العملاء</span><span lang="en">Customer reviews</span></h2>
+          <p>
+            <span lang="ar">سكرين شوتس من رسايل عملائنا.</span>
+            <span lang="en">Screenshots of messages from our customers.</span>
+          </p>
+        </div>
+
+        <!--
+          لما يبقى عندك سكرين شوت حقيقي من عميل:
+          1. حط الصورة في فولدر images باسم زي review1.jpg
+          2. امسح السطر اللي فيه class="review-placeholder" كله
+          3. وحط مكانه السطر ده:
+             <img class="review-img" src="images/review1.jpg" alt="رسالة من عميل" loading="lazy">
+          (متحطش أي تقييم مش حقيقي)
+        -->
+        <div class="reviews-grid">
+          <div class="review-placeholder"><span lang="ar">هنا هيتحط سكرين شوت من رسالة عميل</span><span lang="en">A customer message screenshot will go here</span></div>
+          <div class="review-placeholder"><span lang="ar">هنا هيتحط سكرين شوت من رسالة عميل</span><span lang="en">A customer message screenshot will go here</span></div>
+          <div class="review-placeholder"><span lang="ar">هنا هيتحط سكرين شوت من رسالة عميل</span><span lang="en">A customer message screenshot will go here</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         7) أسئلة شائعة: كل سؤال بيفتح لما تدوس عليه
+         ===================================================== -->
+    <section id="faq" class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <h2><span lang="ar">أسئلة شائعة</span><span lang="en">FAQ</span></h2>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary><span lang="ar">العطور أصلية؟</span><span lang="en">Are the perfumes original?</span></summary>
+            <p lang="ar">أيوه، كلها أصلية. بنشتري كل قطعة بنفسنا من المتجر الرسمي في الكويت، وبنبعتلك صورتها مع فاتورة الشراء الكويتية قبل الشحن. ولما توصلك بتعاينها قبل ما تدفع الباقي.</p>
+            <p lang="en">Yes, all of them. We buy every piece ourselves from the official store in Kuwait, and send you its photo with the Kuwaiti purchase invoice before shipping. When it arrives, you inspect it before paying the rest.</p>
+          </details>
+
+          <details>
+            <summary><span lang="ar">التسليم بياخد قد إيه؟</span><span lang="en">How long does delivery take?</span></summary>
+            <p lang="ar">التسليم خلال <span data-setting="deliveryTime">3 أسابيع</span> من وقت دفع العربون، لأننا بنشتري القطعة مخصوص ليك من الكويت. وبنبعتلك صورة القطعة والفاتورة أول ما نشتريها.</p>
+            <p lang="en">Delivery is within <span data-setting="deliveryTimeEn">3 weeks</span> of paying the deposit, because we buy the piece in Kuwait especially for you. We send you its photo and invoice as soon as we buy it.</p>
+          </details>
+
+          <details>
+            <summary><span lang="ar">العربون كام وبدفعه إزاي؟</span><span lang="en">How much is the deposit, and how do I pay?</span></summary>
+            <p lang="ar">العربون 50% من سعر القطعة، وبتدفعه بإنستاباي أو محفظة إلكترونية. والـ 50% الباقيين بتدفعهم للمندوب وقت الاستلام، بعد ما تعاين القطعة.</p>
+            <p lang="en">The deposit is 50% of the price, paid via InstaPay or a mobile wallet. You pay the other 50% to the courier on delivery, after inspecting the piece.</p>
+          </details>
+
+          <details>
+            <summary><span lang="ar">ينفع أرجّع أو ألغي الطلب؟</span><span lang="en">Can I return or cancel my order?</span></summary>
+            <p lang="ar">لو القطعة وصلتك مختلفة عن اللي اتفقنا عليه أو فيها عيب، من حقك ترفض الاستلام. وتفاصيل الإلغاء والاسترجاع كلها في <a href="#returns">سياسة الاسترجاع</a>.</p>
+            <p lang="en">If the piece arrives different from what we agreed on, or damaged, you can refuse delivery. All the details are in our <a href="#returns">return policy</a>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         8) سياسة الاسترجاع (مسودة لازم تراجعها)
+         ===================================================== -->
+    <section id="returns" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2><span lang="ar">سياسة الاسترجاع والإلغاء</span><span lang="en">Returns &amp; cancellations</span></h2>
+        </div>
+
+        <!-- ⚠ المربع ده ليك إنت بس: امسحه بعد ما تراجع السياسة (بالعربي والإنجليزي) وتوافق عليها -->
+        <div class="draft-note" dir="rtl">
+          ⚠ مسودة مبدئية، لازم تراجعها: اتأكد إن الكلام ده مناسب لشغلك ومتوافق مع قانون حماية المستهلك المصري، وعدّل اللي محتاج تعديل، وبعدين امسح المربع ده قبل ما تنشر الموقع.
+        </div>
+
+        <div class="policy">
+          <div lang="ar">
+            <h3>قبل ما نشتري القطعة</h3>
+            <ul>
+              <li>تقدر تلغي الحجز ويرجعلك العربون كامل، طالما لسه ما اشترناش القطعة من الكويت.</li>
+            </ul>
+
+            <h3>بعد ما نشتري القطعة</h3>
+            <ul>
+              <li>القطعة بتتشري مخصوص ليك، فالعربون مش بيرجع لو لغيت بعد ما بعتنالك صورتها وفاتورتها.</li>
+            </ul>
+
+            <h3>وقت الاستلام</h3>
+            <ul>
+              <li>من حقك تفتح الشحنة وتعاين القطعة قبل ما تدفع الباقي للمندوب.</li>
+              <li>لو القطعة مختلفة عن الصورة والفاتورة اللي بعتناهالك، أو فيها كسر أو تسريب، ترفض الاستلام ويرجعلك العربون كامل.</li>
+              <li>لو رفضت الاستلام والقطعة سليمة ومطابقة، العربون مش بيرجع.</li>
+            </ul>
+
+            <h3>بعد الاستلام</h3>
+            <ul>
+              <li>العطور منتجات شخصية، فمش بنقبل ترجيعها أو تبديلها بعد الاستلام وفتح الغلاف.</li>
+            </ul>
+
+            <h3>إزاي تطلب إلغاء أو استرجاع</h3>
+            <ul>
+              <li>ابعتلنا على <a data-wa href="#" target="_blank" rel="noopener">واتساب</a> وقولنا المشكلة، ومعاها صور للقطعة لو موجودة.</li>
+            </ul>
+          </div>
+
+          <div lang="en">
+            <h3>Before we buy the piece</h3>
+            <ul>
+              <li>You can cancel and get your full deposit back, as long as we haven’t bought the piece in Kuwait yet.</li>
+            </ul>
+
+            <h3>After we buy the piece</h3>
+            <ul>
+              <li>The piece is bought especially for you, so the deposit is non-refundable if you cancel after we’ve sent you its photo and invoice.</li>
+            </ul>
+
+            <h3>On delivery</h3>
+            <ul>
+              <li>You have the right to open the package and inspect the piece before paying the rest to the courier.</li>
+              <li>If the piece differs from the photo and invoice we sent you, or is broken or leaking, refuse delivery and you’ll get your full deposit back.</li>
+              <li>If you refuse delivery while the piece is intact and as described, the deposit is non-refundable.</li>
+            </ul>
+
+            <h3>After delivery</h3>
+            <ul>
+              <li>Perfumes are personal products, so we can’t accept returns or exchanges once delivered and unsealed.</li>
+            </ul>
+
+            <h3>How to request a cancellation or return</h3>
+            <ul>
+              <li>Message us on <a data-wa href="#" target="_blank" rel="noopener">WhatsApp</a> describing the issue, with photos of the piece if you have them.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================
+       9) الفوتر: آخر الصفحة
+       ===================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-logo"><span lang="ar">طِيب</span><span lang="en">Teeb</span></p>
+      <p class="footer-note">
+        <span lang="ar">منتجات أصلية مستوردة من الكويت، ومش وكيل رسمي</span>
+        <span lang="en">Original products imported from Kuwait. We are not an official agent.</span>
+      </p>
+
+      <!-- لينكات السوشيال: بتتغير من أول script.js (SETTINGS) -->
+      <div class="social">
+        <a data-social="instagram" href="#" target="_blank" rel="noopener" aria-label="إنستجرام" data-aria-en="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="0.6" fill="currentColor"/></svg>
+        </a>
+        <a data-social="facebook" href="#" target="_blank" rel="noopener" aria-label="فيسبوك" data-aria-en="Facebook">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3Z"/></svg>
+        </a>
+        <a data-wa href="#" target="_blank" rel="noopener" aria-label="واتساب" data-aria-en="WhatsApp">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+        </a>
+      </div>
+
+      <p class="copyright">© <span id="year">2026</span> <span lang="ar">طِيب</span><span lang="en">Teeb</span></p>
+    </div>
+  </footer>
+
+  <!-- لستة المنتجات لازم تتحمل الأول، وبعدها كود الموقع -->
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

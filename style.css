@@ -1,0 +1,819 @@
+/* =====================================================
+   ملف التنسيق: كل حاجة ليها علاقة بشكل الموقع
+   (ألوان، خطوط، مسافات، ترتيب الأقسام)
+   الموقع متصمم للموبايل الأول، وتحت فيه تعديلات للشاشات الكبيرة
+   ===================================================== */
+
+
+/* ===== ألوان الوضع العادي (الفاتح): لو عايز تغيّر لون، غيّره هنا ===== */
+:root {
+  color-scheme: light;
+  --bg: #faf7f2;          /* الخلفية الفاتحة */
+  --bg-alt: #f3ede3;      /* خلفية الأقسام اللي بالتبادل */
+  --surface: #ffffff;     /* خلفية الكروت */
+  --text: #2b2622;        /* لون الكلام الأساسي */
+  --muted: #6b6159;       /* لون الكلام الثانوي */
+  --gold: #b8924a;        /* الدهبي للتفاصيل والزخارف */
+  --gold-dark: #8a6a2c;   /* دهبي أغمق للأزرار والكلام (أوضح في القراية) */
+  --gold-hover: #75591f;  /* لون الزرار الدهبي لما تقف عليه */
+  --on-gold: #ffffff;     /* لون الكلام اللي فوق الدهبي */
+  --gold-soft: #efe4cf;   /* دهبي فاتح جدًا للخلفيات */
+  --line: #e6dccb;        /* لون الخطوط والحدود */
+  --green: #1b7a43;       /* أخضر زرار الواتساب */
+  --green-text: #1b7a43;  /* أخضر كلمة "متاح للحجز" */
+  --header-bg: rgba(250, 247, 242, .94);
+  --media-bg: linear-gradient(160deg, #f7f0e3, #ebdec4);  /* خلفية مكان الصورة */
+  --footer-bg: #2b2622;
+  --warn-bg: #fff4d6;     /* ألوان المربع الأصفر (المسودة) */
+  --warn-border: #c98a00;
+  --warn-text: #6b4a00;
+  --radius: 14px;         /* دوران أركان الكروت */
+  --shadow: 0 1px 2px rgba(43, 38, 34, .04), 0 8px 24px rgba(43, 38, 34, .06);
+  --header-h: 100px;      /* طول الهيدر (علشان الروابط متخبيش العناوين) */
+}
+
+/* ===== ألوان الوضع الليلي ===== */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #15120f;
+  --bg-alt: #1b1713;
+  --surface: #221d18;
+  --text: #f1ebe2;
+  --muted: #b2a696;
+  --gold: #c9a45c;
+  --gold-dark: #d9b56e;
+  --gold-hover: #e8c98a;
+  --on-gold: #1a1612;
+  --gold-soft: #30281d;
+  --line: #3a3128;
+  --green-text: #5cc88a;
+  --header-bg: rgba(21, 18, 15, .92);
+  --media-bg: linear-gradient(160deg, #2b241c, #1e1a15);
+  --footer-bg: #0d0b09;
+  --warn-bg: #2e2410;
+  --warn-border: #c98a00;
+  --warn-text: #f0cf86;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+
+/* ===== اللغتين: بنعرض الكلام اللي بلغة الصفحة بس ===== */
+html[lang="ar"] [lang="en"],
+html[lang="en"] [lang="ar"] {
+  display: none !important;
+}
+
+
+/* ===== إعدادات عامة للصفحة كلها ===== */
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;           /* نزول ناعم لما تدوس على رابط */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Cairo", Tahoma, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  background: var(--bg);
+  color: var(--text);
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--gold-dark); }
+[hidden] { display: none !important; }
+
+/* إطار واضح حوالين الزرار لما حد يستخدم الكيبورد */
+:focus-visible {
+  outline: 2px solid var(--gold-dark);
+  outline-offset: 3px;
+}
+
+/* الحاوية: بتحدد عرض المحتوى وبتسيب مسافة 16px من الجناب */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* لما تدوس على رابط، العنوان مايستخباش تحت الهيدر */
+section[id] { scroll-margin-top: var(--header-h); }
+
+
+/* ===== الأزرار ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border: 0;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .15s, transform .15s;
+}
+.btn:active { transform: scale(.97); }
+
+/* الزرار الدهبي */
+.btn-gold {
+  background: var(--gold-dark);
+  color: var(--on-gold);
+  box-shadow: 0 6px 18px rgba(138, 106, 44, .28);
+}
+.btn-gold:hover { background: var(--gold-hover); }
+
+/* زرار الواتساب الأخضر */
+.btn-wa {
+  background: var(--green);
+  color: #fff;
+}
+.btn-wa:hover { background: #15633a; }
+
+/* زرار "بلّغني لما يتوفر" (للمنتج اللي نفد) */
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+.btn-outline:hover { background: var(--bg); }
+
+
+/* =====================================================
+   1) الهيدر
+   ===================================================== */
+.site-header {
+  position: sticky;          /* بيفضل ظاهر فوق وانت بتنزل */
+  top: 0;
+  z-index: 50;
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+/* على الموبايل: الاسم والزراير في سطر، والروابط في السطر اللي تحته */
+.header-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "logo actions"
+    "nav  nav";
+  align-items: center;
+  gap: 2px 12px;
+  padding-top: 10px;
+  padding-bottom: 6px;
+}
+
+/* اسم المتجر (اللوجو) بالدهبي */
+.logo {
+  grid-area: logo;
+  justify-self: start;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--gold-dark);
+  text-decoration: none;
+}
+
+.main-nav {
+  grid-area: nav;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+.main-nav a {
+  padding: 4px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: .95rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.main-nav a:hover {
+  background: var(--gold-soft);
+  color: var(--gold-dark);
+}
+
+/* الزراير اللي في الهيدر: اللغة + الوضع الليلي + واتساب */
+.header-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.icon-btn:hover {
+  background: var(--gold-soft);
+  color: var(--gold-dark);
+}
+.icon-btn svg { width: 20px; height: 20px; }
+
+/* زرار اللغة أعرض شوية علشان الكلمة */
+.lang-btn {
+  width: auto;
+  min-width: 40px;
+  padding: 0 12px;
+  border-radius: 999px;
+}
+
+/* القمر بيظهر في الوضع العادي، والشمس في الوضع الليلي */
+.icon-sun { display: none; }
+[data-theme="dark"] .icon-sun { display: block; }
+[data-theme="dark"] .icon-moon { display: none; }
+
+.header-wa {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--green);
+  color: #fff;
+}
+.header-wa svg { width: 22px; height: 22px; }
+
+
+/* =====================================================
+   2) العنوان الرئيسي
+   ===================================================== */
+.hero {
+  padding: 44px 0 36px;
+  text-align: center;
+  /* إضاءة دهبي خفيفة في الخلفية */
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(184, 146, 74, .16), transparent 70%),
+    var(--bg);
+}
+
+/* شريط العروض الصغير */
+.offer-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 6px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--gold-dark);
+  font-size: .875rem;
+  font-weight: 700;
+}
+.offer-dot {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px rgba(184, 146, 74, .2);
+}
+
+.hero h1 {
+  max-width: 15em;
+  margin: 0 auto 14px;
+  font-size: clamp(1.9rem, 7.5vw, 3.25rem);
+  font-weight: 800;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.hero h1 .gold { color: var(--gold-dark); }
+
+.hero-sub {
+  max-width: 30em;
+  margin: 0 auto 28px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  text-wrap: balance;
+}
+
+
+/* =====================================================
+   3) شريط الثقة
+   ===================================================== */
+.trust { padding: 4px 0 12px; }
+
+.trust-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.trust-icon {
+  flex: none;
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--gold-soft);
+  color: var(--gold-dark);
+}
+.trust-icon svg { width: 24px; height: 24px; }
+
+.trust-item h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.trust-item p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: .875rem;
+  line-height: 1.6;
+}
+
+
+/* =====================================================
+   شكل الأقسام والعناوين بشكل عام
+   ===================================================== */
+.section { padding: 56px 0; }
+.section-alt { background: var(--bg-alt); }
+
+.section-head {
+  margin-bottom: 28px;
+  text-align: center;
+}
+.section-head h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 5.5vw, 2rem);
+  font-weight: 800;
+  line-height: 1.4;
+}
+/* الخط الدهبي الصغير تحت العنوان */
+.section-head h2::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 2px;
+  margin: 10px auto 0;
+  border-radius: 2px;
+  background: var(--gold);
+}
+.section-head p {
+  max-width: 34em;
+  margin: 12px auto 0;
+  color: var(--muted);
+  text-wrap: balance;     /* يوزّع الكلام على السطور بالتساوي */
+}
+
+
+/* =====================================================
+   4) كروت العطور
+   ===================================================== */
+/* على الموبايل: عمودين */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* مكان الصورة */
+.card-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--media-bg);
+}
+.card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* الشكل المؤقت لحد ما تحط صورة حقيقية */
+.card-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--gold);
+}
+.card-placeholder svg { width: 34%; height: auto; opacity: .75; }
+
+/* شارة "عرض" */
+.badge {
+  position: absolute;
+  top: 10px;
+  inset-inline-start: 10px;
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--gold-dark);
+  color: var(--on-gold);
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+/* الكلام اللي تحت الصورة */
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px;
+}
+.card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.card-size {
+  color: var(--gold-dark);
+  font-size: .82rem;
+  font-weight: 600;
+}
+.card-desc {
+  margin: 0;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+/* السعر والسعر القديم */
+.card-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 8px;
+  margin-top: 6px;
+}
+.price {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.old-price {
+  color: var(--muted);
+  font-size: .85rem;
+  text-decoration: line-through;
+}
+
+/* حالة المنتج: متاح للحجز / نفد */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-size: .82rem;
+  font-weight: 700;
+}
+.status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status.available { color: var(--green-text); }
+.status.soldout { color: #8c8279; }
+
+/* الزرار بيفضل تحت خالص في كل الكروت، وكلامه في سطر واحد حتى في الموبايلات الصغيرة */
+.card .btn {
+  width: 100%;
+  margin-top: auto;
+  padding: 10px 6px;
+  gap: 5px;
+  font-size: clamp(.74rem, 3.4vw, .875rem);
+  white-space: nowrap;
+}
+.card .btn svg { width: 17px; height: 17px; flex: none; }
+
+/* المنتج اللي نفد: صورته باهتة شوية */
+.card.is-soldout .card-media { filter: grayscale(.7); opacity: .7; }
+
+/* رسالة لو فيه مشكلة في ملف المنتجات */
+.products-msg {
+  grid-column: 1 / -1;
+  padding: 20px;
+  border: 2px dashed var(--warn-border);
+  border-radius: var(--radius);
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  font-weight: 600;
+  text-align: center;
+}
+
+
+/* =====================================================
+   5) إزاي تطلب
+   ===================================================== */
+.steps {
+  display: grid;
+  gap: 12px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;     /* عدّاد الأرقام */
+}
+
+.step {
+  position: relative;
+  padding: 18px;
+  padding-inline-start: 74px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  counter-increment: step;
+}
+/* الدايرة اللي فيها رقم الخطوة */
+.step::before {
+  content: counter(step);
+  position: absolute;
+  top: 18px;
+  inset-inline-start: 18px;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--gold-dark);
+  color: var(--on-gold);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+.step h3 {
+  margin: 0 0 2px;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+.step p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .94rem;
+}
+
+
+/* =====================================================
+   6) آراء العملاء
+   ===================================================== */
+/* على الموبايل: الصور بتتحرك يمين وشمال بالصباع */
+.reviews-grid {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+.reviews-grid > * {
+  flex: 0 0 70%;
+  max-width: 300px;
+  scroll-snap-align: center;
+}
+
+.review-placeholder {
+  aspect-ratio: 3 / 4;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--muted);
+  font-size: .9rem;
+  text-align: center;
+}
+
+.review-img {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+
+/* =====================================================
+   7) أسئلة شائعة
+   ===================================================== */
+.faq {
+  display: grid;
+  gap: 10px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.faq details {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::-webkit-details-marker { display: none; }
+/* علامة + اللي بتلف لما السؤال يتفتح */
+.faq summary::after {
+  content: "+";
+  flex: none;
+  color: var(--gold-dark);
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform .2s;
+}
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p {
+  margin: 0;
+  padding: 0 18px 16px;
+  color: var(--muted);
+}
+
+
+/* =====================================================
+   8) سياسة الاسترجاع
+   ===================================================== */
+/* المربع الأصفر اللي بيفكّرك تراجع المسودة */
+.draft-note {
+  max-width: 760px;
+  margin: 0 auto 16px;
+  padding: 12px 16px;
+  border: 2px dashed var(--warn-border);
+  border-radius: 12px;
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  font-size: .94rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.policy {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 22px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.policy h3 {
+  margin: 20px 0 4px;
+  color: var(--gold-dark);
+  font-size: 1.05rem;
+}
+.policy h3:first-child { margin-top: 0; }
+.policy ul {
+  margin: 0;
+  padding-inline-start: 20px;
+  color: var(--muted);
+}
+.policy li { margin-bottom: 4px; }
+
+
+/* =====================================================
+   9) الفوتر
+   ===================================================== */
+.site-footer {
+  padding: 44px 0 24px;
+  background: var(--footer-bg);
+  border-top: 1px solid var(--line);
+  color: #e9e1d3;
+  text-align: center;
+}
+.footer-logo {
+  margin: 0;
+  color: #d4af6a;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+.footer-note {
+  margin: 6px auto 22px;
+  color: #cbbfa9;
+  font-size: .94rem;
+  text-wrap: balance;
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.social a {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(212, 175, 106, .4);
+  border-radius: 50%;
+  color: #d4af6a;
+  transition: background .15s;
+}
+.social a:hover { background: rgba(212, 175, 106, .12); }
+.social svg { width: 20px; height: 20px; }
+
+.copyright {
+  margin: 26px 0 0;
+  color: #9c9182;
+  font-size: .82rem;
+}
+
+
+/* =====================================================
+   تعديلات للتابلت والكمبيوتر (الشاشات من 768px وأكبر)
+   ===================================================== */
+@media (min-width: 768px) {
+  :root { --header-h: 76px; }
+
+  /* الهيدر كله في سطر واحد */
+  .header-inner {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas: "logo nav actions";
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .main-nav { gap: 8px; }
+
+  .hero { padding: 80px 0 64px; }
+
+  /* مربعات الثقة جنب بعض */
+  .trust-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .trust-item {
+    flex-direction: column;
+    padding: 24px 18px;
+    text-align: center;
+  }
+
+  .section { padding: 80px 0; }
+
+  /* العطور: 3 كروت في الصف */
+  .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .card-body { padding: 16px; }
+  .card-title { font-size: 1.1rem; }
+  .card .btn { padding: 12px; font-size: .95rem; }
+
+  /* الخطوات: اتنين في الصف */
+  .steps { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  /* آراء العملاء: 3 جنب بعض من غير سحب */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    overflow: visible;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .reviews-grid > * { max-width: none; }
+}
+
+/* الشاشات الكبيرة (كمبيوتر) */
+@media (min-width: 1024px) {
+  /* الخطوات الأربعة جنب بعض، والرقم فوق */
+  .steps { grid-template-columns: repeat(4, 1fr); }
+  .step { padding: 74px 18px 20px; }
+}
+
+/* لو الجهاز مضبوط على تقليل الحركة */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
