@@ -25,13 +25,15 @@
   <meta name="theme-color" content="#faf7f2">
 
   <!-- ===== Open Graph: شكل اللينك لما تبعته على واتساب أو إنستجرام أو فيسبوك ===== -->
-  <!-- ملحوظة: بعد ما نرفع الموقع (الخطوة 6) هنغيّر مسار الصورة للينك الكامل، علشان واتساب محتاجه كده -->
+  <!-- ملحوظة: لينك الموقع والصورة لازم يبقوا كاملين علشان واتساب يقراهم.
+       لما نربط الدومين (الخطوة 7) هنغيّر اللينكين دول للدومين الجديد -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="ar_EG">
   <meta property="og:site_name" content="طِيب">
+  <meta property="og:url" content="https://teeb-perfumes.mohamedeliwa206.workers.dev/">
   <meta property="og:title" content="طِيب | عطور أصلية من الخليج بسعر أقل من السوق">
   <meta property="og:description" content="كل قطعة معاها فاتورة الشراء من الخليج، وبتعاينها قبل ما تدفع الباقي. احجز على واتساب.">
-  <meta property="og:image" content="images/og-image.png">
+  <meta property="og:image" content="https://teeb-perfumes.mohamedeliwa206.workers.dev/images/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
@@ -99,7 +101,7 @@
          ===================================================== -->
     <section class="hero">
       <div class="container">
-        <!-- شريط العروض: نصه بيتغير من أول script.js (offerBar و offerBarEn) -->
+        <!-- شريط العروض: نصه بيتغير من لوحة التحكم أو ملف settings.js (offerBar و offerBarEn) -->
         <p class="offer-bar" id="offer-bar">
           <span class="offer-dot" aria-hidden="true"></span>
           <span lang="ar" data-setting="offerBar">الحجز مفتوح دلوقتي على عروض الخليج</span>
@@ -159,7 +161,7 @@
             <!-- أيقونة عربية شحن -->
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 17V5a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h1.5"/><path d="M14 8h3.5l4.5 5v3a1 1 0 0 1-1 1h-1.5"/><path d="M9.5 17h5"/><circle cx="7" cy="17.5" r="2.2"/><circle cx="17" cy="17.5" r="2.2"/></svg>
           </span>
-          <!-- المدة بتتغير من أول script.js (deliveryTime و deliveryTimeEn) -->
+          <!-- المدة بتتغير من لوحة التحكم أو ملف settings.js (deliveryTime و deliveryTimeEn) -->
           <div lang="ar">
             <h3>تسليم خلال <span data-setting="deliveryTime">3 أسابيع</span></h3>
             <p>وبنبعتلك صورة القطعة أول ما نشتريها</p>
@@ -406,7 +408,7 @@
         <span lang="en">Original products imported from the Gulf. We are not an official agent.</span>
       </p>
 
-      <!-- لينكات السوشيال: بتتغير من أول script.js (SETTINGS) -->
+      <!-- لينكات السوشيال: بتتغير من لوحة التحكم أو ملف settings.js -->
       <div class="social">
         <a data-social="instagram" href="#" target="_blank" rel="noopener" aria-label="إنستجرام" data-aria-en="Instagram">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="0.6" fill="currentColor"/></svg>
@@ -423,7 +425,8 @@
     </div>
   </footer>
 
-  <!-- لستة المنتجات لازم تتحمل الأول، وبعدها كود الموقع -->
+  <!-- الإعدادات ولستة المنتجات لازم يتحملوا الأول، وبعدهم كود الموقع -->
+  <script src="settings.js"></script>
   <script src="products.js"></script>
   <script src="script.js"></script>
 </body>

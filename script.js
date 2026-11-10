@@ -1,32 +1,13 @@
 // =====================================================
-//  إعدادات المتجر
-//  غيّر البيانات اللي هنا بس، وهي هتتغير في الموقع كله لوحدها.
-//  (الكلام لازم يفضل بين علامتين التنصيص "كده")
-//  الحاجات اللي آخرها En دي النسخة الإنجليزي من نفس الحاجة.
-// =====================================================
-const SETTINGS = {
-  // رقم الواتساب بيزنس: 20 وبعدها رقمك من غير الصفر اللي في الأول (مثال: 201012345678)
-  whatsapp: "20XXXXXXXXXX",
-
-  // مدة التسليم اللي بتلتزم بيها
-  deliveryTime: "3 أسابيع",
-  deliveryTimeEn: "3 weeks",
-
-  // نص شريط العروض اللي فوق العنوان. لو عايز تخفيه خالص اكتب "" بس
-  offerBar: "الحجز مفتوح دلوقتي على عروض الخليج",
-  offerBarEn: "Pre-orders are open on current Gulf offers",
-
-  // لينكات السوشيال
-  instagram: "#",
-  facebook: "#"
-};
-
-
-// =====================================================
-//  من هنا ولتحت كود الموقع، مش محتاج تلمسه
+//  كود الموقع، مش محتاج تلمسه.
+//  إعدادات المتجر (رقم الواتساب، مدة التسليم، شريط العروض، السوشيال)
+//  بقت في ملف settings.js، وتقدر تعدّلها من لوحة التحكم (لينك موقعك)/admin
 // =====================================================
 
 const root = document.documentElement;
+
+// الإعدادات من settings.js. لو الملف فيه غلطة، الموقع يفضل شغال بقيم فاضية
+const CONFIG = typeof SETTINGS !== "undefined" ? SETTINGS : {};
 
 // الكلام اللي الكود بيكتبه بنفسه، بالعربي والإنجليزي
 const TEXT = {
@@ -82,7 +63,7 @@ function remember(key, value) {
 
 // بيعمل لينك واتساب بيفتح على رقمك برسالة جاهزة
 function whatsappLink(message) {
-  return "https://wa.me/" + SETTINGS.whatsapp + "?text=" + encodeURIComponent(message);
+  return "https://wa.me/" + (CONFIG.whatsapp || "") + "?text=" + encodeURIComponent(message);
 }
 
 // بيكتب السعر بالشكل ده: 1,850 جنيه  أو  EGP 1,850
@@ -123,12 +104,12 @@ function makePlaceholder() {
 function applySettings() {
   // الكلام اللي بيتغير (مدة التسليم، شريط العروض)
   document.querySelectorAll("[data-setting]").forEach(function (node) {
-    const value = SETTINGS[node.dataset.setting];
+    const value = CONFIG[node.dataset.setting];
     if (value) node.textContent = value;
   });
 
   // شريط العروض: لو النص بتاع اللغة دي فاضي بنخفيه
-  const offerText = lang() === "en" ? SETTINGS.offerBarEn : SETTINGS.offerBar;
+  const offerText = lang() === "en" ? CONFIG.offerBarEn : CONFIG.offerBar;
   document.getElementById("offer-bar").hidden = !offerText;
 
   // كل لينكات الواتساب العامة (الهيدر والفوتر وسياسة الاسترجاع)
@@ -138,7 +119,7 @@ function applySettings() {
 
   // لينكات إنستجرام وفيسبوك
   document.querySelectorAll("[data-social]").forEach(function (link) {
-    link.href = SETTINGS[link.dataset.social] || "#";
+    link.href = CONFIG[link.dataset.social] || "#";
   });
 
   // السنة اللي في آخر الصفحة بتتحدث لوحدها

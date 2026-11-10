@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- الصفحة دي مش للعملاء: بنقول لجوجل ميعرضهاش -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>لوحة التحكم | طِيب</title>
+  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+
+  <!-- لو مختار الوضع الليلي في الموقع، اللوحة تفتح ليلي برضه -->
+  <script>
+    try {
+      if (localStorage.getItem("theme") === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    } catch (e) {}
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">طِيب <span>لوحة التحكم</span></div>
+      <nav class="top-links">
+        <a href="../" target="_blank" rel="noopener">افتح الموقع ↗</a>
+        <button type="button" id="logout" class="link-btn" hidden>خروج</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ===== شاشة الدخول ===== -->
+    <section id="login" class="card login" hidden>
+      <h1>أهلًا بيك</h1>
+      <p>علشان تدخل، حط <strong>رمز الدخول</strong> اللي عملته من GitHub.
+        الرمز بيتحفظ على الجهاز ده بس، ومحدش غيرك بيشوفه.</p>
+      <form id="login-form" novalidate>
+        <label for="token">رمز الدخول</label>
+        <input id="token" type="password" autocomplete="off" spellcheck="false" dir="ltr" placeholder="github_pat_...">
+        <button class="btn btn-gold" type="submit">دخول</button>
+        <p id="login-error" class="msg msg-error" role="alert" hidden></p>
+      </form>
+    </section>
+
+    <!-- ===== جاري التحميل ===== -->
+    <p id="loading" class="loading" hidden>
+      <span class="spinner" aria-hidden="true"></span> بنحمّل المنتجات...
+    </p>
+
+    <!-- ===== لو حصلت مشكلة في التحميل ===== -->
+    <section id="load-error" class="card" hidden>
+      <p id="load-error-text" class="msg msg-error" role="alert"></p>
+      <button type="button" id="retry" class="btn btn-gold">جرّب تاني</button>
+    </section>
+
+    <!-- ===== اللوحة ===== -->
+    <section id="app" hidden>
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab-products" aria-controls="panel-products" aria-selected="true">المنتجات</button>
+        <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false">إعدادات الموقع</button>
+      </div>
+
+      <!-- المنتجات -->
+      <div id="panel-products" role="tabpanel" aria-labelledby="tab-products">
+        <div class="panel-head">
+          <h2>المنتجات <span id="count" class="count"></span></h2>
+          <button type="button" id="add-product" class="btn btn-gold">+ إضافة منتج</button>
+        </div>
+        <p class="note">أي تعديل هنا مش بيظهر للعملاء غير لما تدوس <strong>«نشر على الموقع»</strong> تحت.</p>
+        <ul id="product-list" class="product-list"></ul>
+        <p id="empty" class="empty" hidden>مفيش منتجات لسه. دوس «إضافة منتج».</p>
+      </div>
+
+      <!-- الإعدادات -->
+      <div id="panel-settings" role="tabpanel" aria-labelledby="tab-settings" hidden>
+        <form id="settings-form" class="card settings" novalidate>
+          <fieldset>
+            <legend>الواتساب</legend>
+            <label>رقم الواتساب
+              <input name="whatsapp" inputmode="tel" dir="ltr" autocomplete="off" placeholder="01012345678">
+            </label>
+            <p class="hint">اكتبه عادي زي 01012345678، وهو هيتظبط لوحده. <a id="wa-test" href="#" target="_blank" rel="noopener">جرّب الرقم ↗</a></p>
+          </fieldset>
+
+          <fieldset>
+            <legend>مدة التسليم</legend>
+            <div class="grid2">
+              <label>بالعربي<input name="deliveryTime" placeholder="3 أسابيع"></label>
+              <label>بالإنجليزي<input name="deliveryTimeEn" dir="ltr" placeholder="3 weeks"></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>شريط العروض (فوق العنوان)</legend>
+            <div class="grid2">
+              <label>بالعربي<input name="offerBar"></label>
+              <label>بالإنجليزي<input name="offerBarEn" dir="ltr"></label>
+            </div>
+            <p class="hint">لو سبت الخانة فاضية، الشريط هيختفي.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>السوشيال</legend>
+            <div class="grid2">
+              <label>لينك إنستجرام<input name="instagram" type="url" dir="ltr" placeholder="https://instagram.com/..."></label>
+              <label>لينك فيسبوك<input name="facebook" type="url" dir="ltr" placeholder="https://facebook.com/..."></label>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== شريط النشر (ثابت تحت) ===== -->
+  <div id="publish-bar" class="publish-bar" hidden>
+    <div class="publish-inner">
+      <p id="publish-status" class="publish-status" role="status" aria-live="polite"></p>
+      <div class="publish-actions">
+        <button type="button" id="discard" class="btn btn-ghost" hidden>إلغاء التعديلات</button>
+        <button type="button" id="publish" class="btn btn-gold" disabled>نشر على الموقع</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== نافذة إضافة / تعديل منتج ===== -->
+  <dialog id="editor" aria-labelledby="editor-title">
+    <form id="editor-form" novalidate>
+      <div class="dlg-head">
+        <h2 id="editor-title">إضافة منتج</h2>
+        <button type="button" class="icon-x" data-close aria-label="قفل">×</button>
+      </div>
+
+      <div class="dlg-body">
+        <div class="image-field">
+          <div id="image-preview" class="image-preview"></div>
+          <div class="image-actions">
+            <label class="btn btn-outline file-btn">
+              اختار صورة
+              <input type="file" id="image-input" accept="image/*" class="visually-hidden">
+            </label>
+            <button type="button" id="image-remove" class="link-btn">شيل الصورة</button>
+            <p id="image-hint" class="hint">الصورة بتتصغر لوحدها. الأحسن تكون متصورة بالطول.</p>
+          </div>
+        </div>
+
+        <div class="grid2">
+          <label>اسم العطر <b class="req">*</b><input name="name" autocomplete="off"></label>
+          <label>الاسم بالإنجليزي <small>(اختياري)</small><input name="nameEn" dir="ltr" autocomplete="off"></label>
+          <label>الوصف<input name="description" autocomplete="off"></label>
+          <label>الوصف بالإنجليزي<input name="descriptionEn" dir="ltr" autocomplete="off"></label>
+          <label>الحجم <small>(زي 100 مل)</small><input name="size" autocomplete="off"></label>
+          <label>الحجم بالإنجليزي <small>(زي 100 ml)</small><input name="sizeEn" dir="ltr" autocomplete="off"></label>
+          <label>السعر بالجنيه <b class="req">*</b><input name="price" inputmode="numeric" dir="ltr" autocomplete="off" placeholder="1850"></label>
+          <label>السعر قبل الخصم <small>(فاضي لو مفيش)</small><input name="oldPrice" inputmode="numeric" dir="ltr" autocomplete="off"></label>
+        </div>
+
+        <div class="checks">
+          <label class="check"><input type="checkbox" name="available"> متاح للحجز <small>(لو مش متعلّم يبقى «نفد»)</small></label>
+          <label class="check"><input type="checkbox" name="offer"> يظهر عليه شارة «عرض»</label>
+        </div>
+
+        <p id="editor-error" class="msg msg-error" role="alert" hidden></p>
+      </div>
+
+      <div class="dlg-foot">
+        <button type="button" class="btn btn-ghost" data-close>إلغاء</button>
+        <button type="submit" class="btn btn-gold">حفظ المنتج</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="admin.js"></script>
+</body>
+</html>
