@@ -25,7 +25,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 0,
     oldPrice: 0,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/musk-set-with-body-musk-spray.jpg"
   },
@@ -38,7 +38,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 0,
     oldPrice: 0,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/tola-musk-set.jpg"
   },
@@ -51,7 +51,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 0,
     oldPrice: 0,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/arabic-collection-set.jpg"
   },
@@ -64,7 +64,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 0,
     oldPrice: 0,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/oud-incense-set.jpg"
   },
@@ -77,7 +77,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 0,
     oldPrice: 0,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/body-oud-set.jpg"
   },
@@ -90,7 +90,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 0,
     oldPrice: 0,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/blue-star-qurashi-blend-set.jpg"
   },
