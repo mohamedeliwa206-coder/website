@@ -55,4 +55,17 @@ const PRODUCTS = [
     available: false,
     image: ""
   },
+  {
+    name: "مسك الختام",
+    nameEn: "",
+    description: "عطر من عبدالصمد القرشي",
+    descriptionEn: "Abdul Samad Al Qurashi perfume",
+    size: "100 مل",
+    sizeEn: "100 ml",
+    price: 7000,
+    oldPrice: 11000,
+    offer: true,
+    available: true,
+    image: "images/products/perfume-mwas82r4.jpg"
+  },
 ];
