@@ -18,6 +18,6 @@ const SETTINGS = {
   offerBarEn: "Pre-orders are open on current Gulf offers",
 
   // لينكات السوشيال ("#" يعني لسه مفيش لينك)
-  instagram: "https://www.instagram.com/teeb_perfume_store?utm_source=qr&rpxt=Zm5yOHdkZ3lhZ3Ux",
+  instagram: "https://www.instagram.com/teeb_perfume_store/",
   facebook: "#"
 };
