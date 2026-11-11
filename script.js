@@ -212,21 +212,50 @@ function createCard(product) {
   return card;
 }
 
-// بيرسم كل الكروت من أول وجديد (بيتنادى تاني لما اللغة تتغير)
-function renderProducts() {
-  const grid = document.getElementById("products-grid");
-  grid.innerHTML = "";
+// بيظهّر أو بيخبّي قسم، ومعاه اللينك بتاعه في القايمة اللي فوق
+function showSection(id, show) {
+  document.getElementById(id).hidden = !show;
+  document.querySelectorAll('.main-nav a[href="#' + id + '"]').forEach(function (link) {
+    link.hidden = !show;
+  });
+}
 
-  if (typeof PRODUCTS === "undefined") {
+// بيرسم كل الكروت من أول وجديد (بيتنادى تاني لما اللغة تتغير)
+// المنتجات اللي عليها «عرض» بتروح قسم العروض، والباقي قسم المنتجات
+function renderProducts() {
+  const offersGrid = document.getElementById("offers-grid");
+  const productsGrid = document.getElementById("products-grid");
+  offersGrid.innerHTML = "";
+  productsGrid.innerHTML = "";
+
+  const fileOk = typeof PRODUCTS !== "undefined";
+  const list = fileOk ? PRODUCTS : [];
+  let offersCount = 0;
+  let productsCount = 0;
+
+  list.forEach(function (product) {
+    if (product.offer) {
+      offersGrid.appendChild(createCard(product));
+      offersCount++;
+    } else {
+      productsGrid.appendChild(createCard(product));
+      productsCount++;
+    }
+  });
+
+  if (!fileOk) {
     // لو فيه غلطة كتابة في products.js (زي فاصلة أو علامة تنصيص ناقصة)
-    grid.appendChild(el("p", "products-msg", TEXT[lang()].fileError));
-  } else if (PRODUCTS.length === 0) {
-    grid.appendChild(el("p", "products-msg", TEXT[lang()].empty));
-  } else {
-    PRODUCTS.forEach(function (product) {
-      grid.appendChild(createCard(product));
-    });
+    productsGrid.appendChild(el("p", "products-msg", TEXT[lang()].fileError));
+  } else if (list.length === 0) {
+    productsGrid.appendChild(el("p", "products-msg", TEXT[lang()].empty));
   }
+
+  // القسم الفاضي بيستخبى. قسم المنتجات بيفضل ظاهر لو فيه رسالة لازم تتقري
+  showSection("offers", offersCount > 0);
+  showSection("products", productsCount > 0 || offersCount === 0);
+
+  // زرار «تصفّح العطور» اللي فوق بيودّي لأول قسم ظاهر
+  document.getElementById("hero-cta").href = offersCount > 0 ? "#offers" : "#products";
 }
 
 

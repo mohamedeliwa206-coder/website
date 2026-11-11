@@ -186,6 +186,7 @@ section[id] { scroll-margin-top: var(--header-h); }
 .main-nav {
   grid-area: nav;
   display: flex;
+  flex-wrap: wrap; /* على الشاشات الصغيرة أوي اللينكات تنزل سطر بدل ما تخرج برة الشاشة */
   justify-content: center;
   gap: 4px;
 }
@@ -364,6 +365,8 @@ section[id] { scroll-margin-top: var(--header-h); }
    ===================================================== */
 .section { padding: 56px 0; }
 .section-alt { background: var(--bg-alt); }
+/* قسم العروض: خلفية دهبي فاتح علشان يبان إنه مميز */
+.section-offers { background: var(--gold-soft); }
 
 .section-head {
   margin-bottom: 28px;

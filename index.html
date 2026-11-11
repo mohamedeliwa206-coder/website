@@ -71,7 +71,8 @@
 
       <!-- الروابط اللي بتنقل لأقسام الصفحة -->
       <nav class="main-nav" aria-label="أقسام الموقع" data-aria-en="Site sections">
-        <a href="#products"><span lang="ar">العطور</span><span lang="en">Perfumes</span></a>
+        <a href="#offers"><span lang="ar">العروض</span><span lang="en">Offers</span></a>
+        <a href="#products"><span lang="ar">المنتجات</span><span lang="en">Products</span></a>
         <a href="#how"><span lang="ar">إزاي تطلب</span><span lang="en">How to order</span></a>
         <a href="#reviews"><span lang="ar">آراء العملاء</span><span lang="en">Reviews</span></a>
       </nav>
@@ -116,7 +117,8 @@
           <span lang="ar">كل قطعة معاها فاتورة الشراء، وبتعاينها قبل ما تدفع الباقي</span>
           <span lang="en">Every piece comes with its purchase invoice, and you inspect it before paying the rest</span>
         </p>
-        <a href="#products" class="btn btn-gold"><span lang="ar">تصفّح العطور</span><span lang="en">Browse perfumes</span></a>
+        <!-- الزرار ده بيودّي لأول قسم فيه منتجات (العروض أو المنتجات) -->
+        <a href="#offers" id="hero-cta" class="btn btn-gold"><span lang="ar">تصفّح العطور</span><span lang="en">Browse perfumes</span></a>
       </div>
     </section>
 
@@ -176,12 +178,33 @@
     </section>
 
     <!-- =====================================================
-         4) العطور: الكروت بتتعمل لوحدها من ملف products.js
+         4أ) العروض: أي منتج متعلّم عليه «عرض» في لوحة التحكم بيظهر هنا
+         (القسم بيستخبى لوحده لو مفيش عروض)
+         ===================================================== -->
+    <section id="offers" class="section section-offers">
+      <div class="container">
+        <div class="section-head">
+          <h2><span lang="ar">العروض</span><span lang="en">Offers</span></h2>
+          <p>
+            <span lang="ar">عروض الخليج الحالية. اختار العرض اللي عاجبك ودوس «اطلب على واتساب»، وهتتفتحلك رسالة جاهزة فيها اسمه وسعره.</span>
+            <span lang="en">Current Gulf offers. Pick one and tap “Order on WhatsApp” to open a ready message with its name and price.</span>
+          </p>
+        </div>
+
+        <!-- هنا كروت العروض بتتحط أوتوماتيك، متكتبش حاجة جوه -->
+        <div class="products-grid" id="offers-grid"></div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         4ب) المنتجات: باقي المنتجات (اللي مش عليها «عرض»)
+         الكروت بتتعمل لوحدها من ملف products.js
+         (القسم بيستخبى لوحده لو كل المنتجات عروض)
          ===================================================== -->
     <section id="products" class="section">
       <div class="container">
         <div class="section-head">
-          <h2><span lang="ar">العطور</span><span lang="en">Perfumes</span></h2>
+          <h2><span lang="ar">المنتجات</span><span lang="en">Products</span></h2>
           <p>
             <span lang="ar">اختار العطر اللي عاجبك ودوس «اطلب على واتساب»، وهتتفتحلك رسالة جاهزة فيها اسمه وسعره.</span>
             <span lang="en">Pick a perfume and tap “Order on WhatsApp” to open a ready message with its name and price.</span>
