@@ -24,7 +24,7 @@
   --header-bg: rgba(250, 247, 242, .94);
   --media-bg: linear-gradient(160deg, #f7f0e3, #ebdec4);  /* خلفية مكان الصورة */
   --footer-bg: #2b2622;
-  --warn-bg: #fff4d6;     /* ألوان المربع الأصفر (المسودة) */
+  --warn-bg: #fff4d6;     /* ألوان المربع الأصفر (رسالة لو فيه مشكلة في المنتجات) */
   --warn-border: #c98a00;
   --warn-text: #6b4a00;
   --radius: 14px;         /* دوران أركان الكروت */
@@ -679,20 +679,6 @@ section[id] { scroll-margin-top: var(--header-h); }
 /* =====================================================
    8) سياسة الاسترجاع
    ===================================================== */
-/* المربع الأصفر اللي بيفكّرك تراجع المسودة */
-.draft-note {
-  max-width: 760px;
-  margin: 0 auto 16px;
-  padding: 12px 16px;
-  border: 2px dashed var(--warn-border);
-  border-radius: 12px;
-  background: var(--warn-bg);
-  color: var(--warn-text);
-  font-size: .94rem;
-  font-weight: 600;
-  text-align: right;
-}
-
 .policy {
   max-width: 760px;
   margin: 0 auto;
