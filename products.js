@@ -25,7 +25,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 4750,
     oldPrice: 12200,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/musk-set-with-body-musk-spray.jpg"
   },
@@ -38,7 +38,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 5450,
     oldPrice: 12200,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/tola-musk-set.jpg"
   },
@@ -51,7 +51,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 7250,
     oldPrice: 19500,
-    offer: false,
+    offer: true,
     available: true,
     image: "images/products/arabic-collection-set.jpg"
   },
