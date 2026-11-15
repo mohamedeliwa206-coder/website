@@ -18,6 +18,20 @@
 
 const PRODUCTS = [
   {
+    name: "بكج بلو ستار وقرشي بلند",
+    nameEn: "Blue Star & Qurashi Blend Set",
+    description: "من عبدالصمد القرشي:\nبلو ستار (100 مل)\nقرشي بلند (90 مل)\nمسك وردي - بودي مسك روز بيرل",
+    descriptionEn: "By Abdul Samad Al Qurashi:\nBlue Star (100 ml)\nQurashi Blend (90 ml)\nBody Musk Rose Pearl",
+    size: "3 قطع",
+    sizeEn: "3 pieces",
+    price: 9400,
+    oldPrice: 21750,
+    offer: true,
+    available: true,
+    category: "sets",
+    image: "images/products/blue-star-qurashi-blend-set.jpg"
+  },
+  {
     name: "بكج المسك مع بخاخ مسك الجسم",
     nameEn: "Musk Set with Body Musk Spray",
     description: "من عبدالصمد القرشي:\nمسك الختام\nمسك الجسم (بخاخ 30 مل)\nمسك رنة خلخال",
@@ -86,20 +100,6 @@ const PRODUCTS = [
     available: true,
     category: "sets",
     image: "images/products/body-oud-set.jpg"
-  },
-  {
-    name: "بكج بلو ستار وقرشي بلند",
-    nameEn: "Blue Star & Qurashi Blend Set",
-    description: "من عبدالصمد القرشي:\nبلو ستار (100 مل)\nقرشي بلند (90 مل)\nمسك وردي - بودي مسك روز بيرل",
-    descriptionEn: "By Abdul Samad Al Qurashi:\nBlue Star (100 ml)\nQurashi Blend (90 ml)\nBody Musk Rose Pearl",
-    size: "3 قطع",
-    sizeEn: "3 pieces",
-    price: 9400,
-    oldPrice: 21750,
-    offer: true,
-    available: true,
-    category: "sets",
-    image: "images/products/blue-star-qurashi-blend-set.jpg"
   },
   {
     name: "سيلك بودي عود",
