@@ -122,7 +122,8 @@ const CATEGORIES = [
   ["sets", "بكجات", "Sets"],
   ["bodyoud", "بودي عود", "Body Oud"],
   ["sprays", "بخاخات", "Sprays"],
-  ["blends", "خلطات ودهن", "Blends & oils"]
+  ["blends", "خلطات ودهن", "Blends & oils"],
+  ["musk", "مسك", "Musk"]
 ];
 
 // اللغة الحالية: "ar" أو "en"

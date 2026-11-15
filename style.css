@@ -409,19 +409,19 @@ section[id] { scroll-margin-top: var(--header-h); }
   box-shadow: 0 0 0 3px var(--gold-soft);
 }
 /* أزرار التصنيفات: على الموبايل بتتحرك يمين وشمال بالصباع */
+/* الأزرار بتنزل سطر جديد لو مش كفاية، علشان كلها تبان على الموبايل */
 .cat-chips {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
-  max-width: 560px;
+  max-width: 600px;
   margin: 12px auto 0;
-  overflow-x: auto;
-  scrollbar-width: none;
   padding: 2px;
 }
-.cat-chips::-webkit-scrollbar { display: none; }
 .cat-chip {
   flex: none;
-  padding: 7px 16px;
+  padding: 7px 14px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
@@ -439,7 +439,6 @@ section[id] { scroll-margin-top: var(--header-h); }
   border-color: var(--gold-dark);
   color: var(--on-gold);
 }
-@media (min-width: 600px) { .cat-chips { justify-content: center; flex-wrap: wrap; } }
 
 .search-info {
   margin: 10px 0 0;

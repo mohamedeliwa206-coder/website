@@ -11,7 +11,7 @@
 //  - oldPrice: السعر قبل الخصم، ولو مفيش خصم اكتب 0
 //  - offer: true = يظهر في قسم "عروض الافتتاح" | false = يظهر في قسم "المنتجات"
 //  - available: true = متاح للحجز | false = نفد
-//  - category: التصنيف = "sets" بكجات ومجموعات | "bodyoud" بودي عود | "sprays" بخاخات | "blends" خلطات ودهن
+//  - category: التصنيف = "sets" بكجات ومجموعات | "bodyoud" بودي عود | "sprays" بخاخات | "blends" خلطات ودهن | "musk" مسك
 //  - image: مسار الصورة زي "images/perfume1.jpg"، ولو فاضي "" هيظهر شكل مؤقت
 //  - الحاجات اللي آخرها En دي النسخة الإنجليزي، ولو فاضية هيظهر العربي مكانها
 // =====================================================
@@ -352,5 +352,89 @@ const PRODUCTS = [
     available: true,
     category: "sprays",
     image: "images/products/safari-blue.jpg"
+  },
+  {
+    name: "مكعبات مسك صلب رنة خلخال",
+    nameEn: "Rannat Khilkhal Solid Musk Cubes",
+    description: "مسك صلب من عبدالصمد القرشي\nعلبة فيها 6 مكعبات",
+    descriptionEn: "Solid musk by Abdul Samad Al Qurashi\nBox of 6 cubes",
+    size: "6 مكعبات",
+    sizeEn: "6 cubes",
+    price: 0,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "musk",
+    image: "images/products/rannat-khilkhal-musk-cubes.jpg"
+  },
+  {
+    name: "مكعبات مسك صلب",
+    nameEn: "Solid Musk Cubes",
+    description: "مسك صلب من عبدالصمد القرشي\nعلبة فيها 6 مكعبات",
+    descriptionEn: "Solid musk by Abdul Samad Al Qurashi\nBox of 6 cubes",
+    size: "6 مكعبات",
+    sizeEn: "6 cubes",
+    price: 0,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "musk",
+    image: "images/products/solid-musk-cubes.jpg"
+  },
+  {
+    name: "مسك الختام",
+    nameEn: "Al Khitam Musk",
+    description: "دهن مسك من عبدالصمد القرشي\nنص تولة",
+    descriptionEn: "Musk oil by Abdul Samad Al Qurashi\nHalf tola",
+    size: "6 مل",
+    sizeEn: "6 ml",
+    price: 1650,
+    oldPrice: 2450,
+    offer: false,
+    available: true,
+    category: "musk",
+    image: "images/products/al-khitam-musk.jpg"
+  },
+  {
+    name: "مسك أرز لبنان",
+    nameEn: "Lebanon Cedar Musk",
+    description: "دهن مسك من عبدالصمد القرشي\nنص تولة",
+    descriptionEn: "Musk oil by Abdul Samad Al Qurashi\nHalf tola",
+    size: "6 مل",
+    sizeEn: "6 ml",
+    price: 1250,
+    oldPrice: 1850,
+    offer: false,
+    available: true,
+    category: "musk",
+    image: "images/products/lebanon-cedar-musk.jpg"
+  },
+  {
+    name: "زيت عطري رنة خلخال",
+    nameEn: "Rannat Khilkhal Perfume Oil",
+    description: "زيت عطري من عبدالصمد القرشي\nنص تولة",
+    descriptionEn: "Perfume oil by Abdul Samad Al Qurashi\nHalf tola",
+    size: "6 مل",
+    sizeEn: "6 ml",
+    price: 1250,
+    oldPrice: 1850,
+    offer: false,
+    available: true,
+    category: "musk",
+    image: "images/products/rannat-khilkhal-oil.jpg"
+  },
+  {
+    name: "مسك أبيض للجسم",
+    nameEn: "White Body Musk",
+    description: "دهن مسك من عبدالصمد القرشي\nنص تولة",
+    descriptionEn: "Musk oil by Abdul Samad Al Qurashi\nHalf tola",
+    size: "6 مل",
+    sizeEn: "6 ml",
+    price: 1250,
+    oldPrice: 1850,
+    offer: false,
+    available: true,
+    category: "musk",
+    image: "images/products/white-body-musk.jpg"
   },
 ];
