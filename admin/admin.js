@@ -150,7 +150,7 @@ const PRODUCTS_HEADER = [
   "//  - الكلام لازم يبقى بين علامتين تنصيص \"كده\"",
   "//  - الأرقام (السعر) من غير تنصيص ومن غير كلمة جنيه",
   "//  - oldPrice: السعر قبل الخصم، ولو مفيش خصم اكتب 0",
-  "//  - offer: true = يظهر في قسم \"العروض\" | false = يظهر في قسم \"المنتجات\"",
+  "//  - offer: true = يظهر في قسم \"عروض الافتتاح\" | false = يظهر في قسم \"المنتجات\"",
   "//  - available: true = متاح للحجز | false = نفد",
   "//  - image: مسار الصورة زي \"images/perfume1.jpg\"، ولو فاضي \"\" هيظهر شكل مؤقت",
   "//  - الحاجات اللي آخرها En دي النسخة الإنجليزي، ولو فاضية هيظهر العربي مكانها",
@@ -516,10 +516,10 @@ function renderProducts() {
     avail.type = "button";
     avail.dataset.action = "available";
     avail.title = "دوس علشان تغيّر الحالة";
-    const offer = el("button", "chip " + (p.offer ? "chip-gold" : "chip-muted"), p.offer ? "في قسم العروض" : "في قسم المنتجات");
+    const offer = el("button", "chip " + (p.offer ? "chip-gold" : "chip-muted"), p.offer ? "في عروض الافتتاح" : "في قسم المنتجات");
     offer.type = "button";
     offer.dataset.action = "offer";
-    offer.title = "دوس علشان تنقله بين قسم العروض وقسم المنتجات";
+    offer.title = "دوس علشان تنقله بين عروض الافتتاح وقسم المنتجات";
     toggles.append(avail, offer);
     item.appendChild(toggles);
 

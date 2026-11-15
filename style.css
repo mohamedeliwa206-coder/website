@@ -191,7 +191,7 @@ section[id] { scroll-margin-top: var(--header-h); }
   gap: 4px;
 }
 .main-nav a {
-  padding: 4px 12px;
+  padding: 4px 8px;           /* على الموبايل مسافة أقل علشان القايمة تفضل سطر واحد */
   border-radius: 999px;
   color: var(--muted);
   font-size: .95rem;
@@ -200,6 +200,9 @@ section[id] { scroll-margin-top: var(--header-h); }
   white-space: nowrap;
   transition: background .15s, color .15s;
 }
+/* على الموبايل: الكلام القصير بس في القايمة */
+.wide-only { display: none; }
+
 .main-nav a:hover {
   background: var(--gold-soft);
   color: var(--gold-dark);
@@ -394,6 +397,19 @@ section[id] { scroll-margin-top: var(--header-h); }
   color: var(--muted);
   text-wrap: balance;     /* يوزّع الكلام على السطور بالتساوي */
 }
+/* سطر «خصومات لحد ..%» في عروض الافتتاح */
+.section-head p.max-off {
+  display: table;         /* عرضه على قد الكلام وفي النص */
+  margin: 14px auto 0;
+  padding: 6px 18px;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+.section-head p.max-off[hidden] { display: none; }
+.max-off b { font-size: 1.2em; font-weight: 800; }
 
 
 /* =====================================================
@@ -758,6 +774,11 @@ section[id] { scroll-margin-top: var(--header-h); }
    ===================================================== */
 @media (min-width: 768px) {
   :root { --header-h: 76px; }
+
+  /* الكلام الطويل في القايمة يبان على الشاشات الكبيرة بس */
+  .wide-only { display: inline; }
+  .narrow-only { display: none; }
+  .main-nav a { padding: 4px 12px; }
 
   /* الهيدر كله في سطر واحد */
   .header-inner {

@@ -71,7 +71,8 @@
 
       <!-- الروابط اللي بتنقل لأقسام الصفحة -->
       <nav class="main-nav" aria-label="أقسام الموقع" data-aria-en="Site sections">
-        <a href="#offers"><span lang="ar">العروض</span><span lang="en">Offers</span></a>
+        <!-- على الموبايل بيبان «العروض» بس علشان القايمة تفضل سطر واحد -->
+        <a href="#offers"><span lang="ar"><span class="wide-only">عروض الافتتاح</span><span class="narrow-only">العروض</span></span><span lang="en"><span class="wide-only">Opening offers</span><span class="narrow-only">Offers</span></span></a>
         <a href="#products"><span lang="ar">المنتجات</span><span lang="en">Products</span></a>
         <a href="#how"><span lang="ar">إزاي تطلب</span><span lang="en">How to order</span></a>
         <a href="#reviews"><span lang="ar">آراء العملاء</span><span lang="en">Reviews</span></a>
@@ -178,16 +179,21 @@
     </section>
 
     <!-- =====================================================
-         4أ) العروض: أي منتج متعلّم عليه «عرض» في لوحة التحكم بيظهر هنا
+         4أ) عروض الافتتاح: أي منتج متعلّم عليه «عرض الافتتاح» في لوحة التحكم بيظهر هنا
          (القسم بيستخبى لوحده لو مفيش عروض)
          ===================================================== -->
     <section id="offers" class="section section-offers">
       <div class="container">
         <div class="section-head">
-          <h2><span lang="ar">العروض</span><span lang="en">Offers</span></h2>
+          <h2><span lang="ar">عروض الافتتاح</span><span lang="en">Opening offers</span></h2>
+          <!-- نسبة الخصم دي بتتحسب لوحدها من أسعار المنتجات (أكبر خصم، متقرّب لتحت لأقرب 5) -->
+          <p class="max-off" id="max-off" hidden>
+            <span lang="ar">بمناسبة افتتاح طِيب: خصومات لحد <b data-maxoff>60</b>%</span>
+            <span lang="en">To celebrate Teeb’s opening: up to <b data-maxoff>60</b>% off</span>
+          </p>
           <p>
-            <span lang="ar">عروض الخليج الحالية. اختار العرض اللي عاجبك ودوس «اطلب على واتساب»، وهتتفتحلك رسالة جاهزة فيها اسمه وسعره.</span>
-            <span lang="en">Current Gulf offers. Pick one and tap “Order on WhatsApp” to open a ready message with its name and price.</span>
+            <span lang="ar">اختار العرض اللي عاجبك ودوس «اطلب على واتساب»، وهتتفتحلك رسالة جاهزة فيها اسمه وسعره.</span>
+            <span lang="en">Pick one and tap “Order on WhatsApp” to open a ready message with its name and price.</span>
           </p>
         </div>
 

@@ -17,7 +17,7 @@ const TEXT = {
     notify: "بلّغني لما يتوفر",
     available: "متاح للحجز",
     soldout: "نفد",
-    offer: "عرض",
+    offer: "عرض الافتتاح",
     oldPrice: "السعر قبل الخصم",
     price: function (n) { return n + " جنيه"; },
     waGeneral: "السلام عليكم، عندي سؤال عن العطور",
@@ -38,7 +38,7 @@ const TEXT = {
     notify: "Notify me",
     available: "Pre-order open",
     soldout: "Sold out",
-    offer: "Offer",
+    offer: "Opening offer",
     oldPrice: "Price before discount",
     price: function (n) { return "EGP " + n; },
     waGeneral: "Hello, I have a question about your perfumes",
@@ -249,6 +249,21 @@ function renderProducts() {
   } else if (list.length === 0) {
     productsGrid.appendChild(el("p", "products-msg", TEXT[lang()].empty));
   }
+
+  // «خصومات لحد ..%»: أكبر خصم في عروض الافتتاح، متقرّب لتحت لأقرب 5
+  // (علشان الرقم يفضل صح لوحده لو الأسعار اتغيرت)
+  let maxOff = 0;
+  list.forEach(function (product) {
+    const price = Number(product.price), old = Number(product.oldPrice);
+    if (product.offer && price > 0 && old > price) {
+      maxOff = Math.max(maxOff, Math.floor((old - price) * 100 / old));
+    }
+  });
+  const shownOff = Math.floor(maxOff / 5) * 5;
+  document.getElementById("max-off").hidden = shownOff < 10;
+  document.querySelectorAll("[data-maxoff]").forEach(function (node) {
+    node.textContent = shownOff;
+  });
 
   // القسم الفاضي بيستخبى. قسم المنتجات بيفضل ظاهر لو فيه رسالة لازم تتقري
   showSection("offers", offersCount > 0);

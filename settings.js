@@ -14,8 +14,8 @@ const SETTINGS = {
   deliveryTimeEn: "3 weeks",
 
   // نص شريط العروض اللي فوق العنوان. لو عايز تخفيه خالص اكتب "" بس
-  offerBar: "الحجز مفتوح دلوقتي على عروض الخليج",
-  offerBarEn: "Pre-orders are open on current Gulf offers",
+  offerBar: "عروض الافتتاح بدأت: خصومات لحد 60%",
+  offerBarEn: "Opening offers are live: up to 60% off",
 
   // لينكات السوشيال ("#" يعني لسه مفيش لينك)
   instagram: "https://www.instagram.com/teeb_perfume_store/",
