@@ -166,7 +166,7 @@ const PRODUCTS = [
     sizeEn: "2 pieces",
     price: 4700,
     oldPrice: 6950,
-    offer: false,
+    offer: true,
     available: true,
     category: "sets",
     image: "images/products/blue-ocean-set.jpg"
