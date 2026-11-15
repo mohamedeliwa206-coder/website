@@ -27,6 +27,12 @@ const TEXT = {
     waAsk: function (item) { return "السلام عليكم، ممكن أعرف سعر:\n" + item; },
     fileError: "فيه غلطة في ملف products.js، غالبًا فاصلة أو علامة تنصيص ناقصة. راجع آخر تعديل عملته.",
     empty: "مفيش عطور متاحة دلوقتي، تابعنا علشان تعرف العروض الجاية.",
+    searchPlaceholder: "ابحث عن عطر… مثلًا: مسك أو سفاري",
+    searchLabel: "ابحث في المنتجات",
+    searchCount: function (n) { return "عدد النتايج: " + n; },
+    searchNone: function (q) { return "مفيش منتجات فيها «" + q + "». "; },
+    searchAsk: "ابعتلنا اسم العطر على واتساب ونشوفهولك",
+    waSearch: function (q) { return "السلام عليكم، بدوّر على عطر: " + q; },
     langButton: "EN",
     langLabel: "Switch to English",
     toDark: "الوضع الليلي",
@@ -48,6 +54,12 @@ const TEXT = {
     waAsk: function (item) { return "Hello, could you tell me the price of:\n" + item; },
     fileError: "There is a mistake in products.js, probably a missing comma or quotation mark.",
     empty: "No perfumes available right now. Follow us to hear about the next offers.",
+    searchPlaceholder: "Search… e.g. musk or safari",
+    searchLabel: "Search products",
+    searchCount: function (n) { return n + (n === 1 ? " result" : " results"); },
+    searchNone: function (q) { return "No products match “" + q + "”. "; },
+    searchAsk: "Send us the perfume name on WhatsApp and we’ll check for you",
+    waSearch: function (q) { return "Hello, I'm looking for: " + q; },
     langButton: "عربي",
     langLabel: "التحويل للعربي",
     toDark: "Dark mode",
@@ -140,6 +152,9 @@ function createCard(product) {
 
   const card = el("article", "card");
   if (!product.available) card.classList.add("is-soldout");
+  // الكلام اللي البحث بيدوّر فيه (بالعربي والإنجليزي)
+  card.dataset.search = normalize([product.name, product.nameEn, product.description,
+    product.descriptionEn, product.size, product.sizeEn].join(" "));
 
   // --- الصورة ---
   const media = el("div", "card-media");
@@ -266,12 +281,80 @@ function renderProducts() {
   });
 
   // القسم الفاضي بيستخبى. قسم المنتجات بيفضل ظاهر لو فيه رسالة لازم تتقري
-  showSection("offers", offersCount > 0);
-  showSection("products", productsCount > 0 || offersCount === 0);
+  sectionDefault.offers = offersCount > 0;
+  sectionDefault.products = productsCount > 0 || offersCount === 0;
+  showSection("offers", sectionDefault.offers);
+  showSection("products", sectionDefault.products);
+
+  // البحث بيستخبى لو مفيش منتجات خالص
+  document.getElementById("search-band").hidden = list.length === 0;
 
   // زرار «تصفّح العطور» اللي فوق بيودّي لأول قسم ظاهر
   document.getElementById("hero-cta").href = offersCount > 0 ? "#offers" : "#products";
+
+  applySearch();
 }
+
+
+// ===== البحث =====
+const searchInput = document.getElementById("search");
+const searchInfo = document.getElementById("search-info");
+const sectionDefault = { offers: true, products: true };
+
+// بيوحّد الكلام علشان البحث يلاقي «اوشن» و«أوشن» زي بعض
+function normalize(text) {
+  return String(text || "").toLowerCase()
+    .replace(/[ً-ٰٟـ]/g, "")   // التشكيل والتطويل
+    .replace(/[أإآٱ]/g, "ا")
+    .replace(/ة/g, "ه")
+    .replace(/ى/g, "ي")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
+    .replace(/[٠-٩]/g, function (d) { return String(d.charCodeAt(0) - 1632); });
+}
+
+function applySearch() {
+  const query = searchInput.value.trim();
+  const words = normalize(query).split(/\s+/).filter(Boolean);
+  const counts = { offers: 0, products: 0 };
+
+  ["offers", "products"].forEach(function (id) {
+    document.getElementById(id + "-grid").querySelectorAll(".card").forEach(function (card) {
+      const match = words.every(function (w) { return card.dataset.search.indexOf(w) !== -1; });
+      card.hidden = !match;
+      if (match) counts[id]++;
+    });
+    // وانت بتدوّر، القسم اللي مفيهوش نتايج بيستخبى (من غير ما نلمس القايمة اللي فوق)
+    document.getElementById(id).hidden = words.length ? counts[id] === 0 : !sectionDefault[id];
+  });
+
+  searchInfo.innerHTML = "";
+  searchInfo.hidden = words.length === 0;
+  if (!words.length) return;
+  const txt = TEXT[lang()];
+  const total = counts.offers + counts.products;
+  if (total > 0) {
+    searchInfo.textContent = txt.searchCount(total);
+  } else {
+    searchInfo.appendChild(document.createTextNode(txt.searchNone(query)));
+    const link = el("a", "", txt.searchAsk);
+    link.href = whatsappLink(txt.waSearch(query));
+    link.target = "_blank";
+    link.rel = "noopener";
+    searchInfo.appendChild(link);
+  }
+}
+
+searchInput.addEventListener("input", applySearch);
+// لما يدوس «بحث» في كيبورد الموبايل: الكيبورد يقفل والصفحة تنزل للنتايج
+searchInput.addEventListener("keydown", function (event) {
+  if (event.key !== "Enter") return;
+  event.preventDefault();
+  searchInput.blur();
+  const first = ["offers", "products"].map(function (id) { return document.getElementById(id); })
+    .filter(function (sec) { return !sec.hidden; })[0];
+  if (first && searchInput.value.trim()) first.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 
 
 // ===== 3) زرار اللغة =====
@@ -291,6 +374,10 @@ function applyLanguage(newLang) {
     if (!node.dataset.ariaAr) node.dataset.ariaAr = node.getAttribute("aria-label");
     node.setAttribute("aria-label", newLang === "en" ? node.dataset.ariaEn : node.dataset.ariaAr);
   });
+
+  // كلام خانة البحث
+  searchInput.placeholder = TEXT[newLang].searchPlaceholder;
+  searchInput.setAttribute("aria-label", TEXT[newLang].searchLabel);
 
   applySettings();
   renderProducts();
