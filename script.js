@@ -34,6 +34,7 @@ const TEXT = {
     searchAsk: "ابعتلنا اسم العطر على واتساب ونشوفهولك",
     waSearch: function (q) { return "السلام عليكم، بدوّر على عطر: " + q; },
     reviewAlt: "رسالة من عميل",
+    allCats: "الكل",
     langButton: "EN",
     langLabel: "Switch to English",
     toDark: "الوضع الليلي",
@@ -62,12 +63,21 @@ const TEXT = {
     searchAsk: "Send us the perfume name on WhatsApp and we’ll check for you",
     waSearch: function (q) { return "Hello, I'm looking for: " + q; },
     reviewAlt: "A message from a customer",
+    allCats: "All",
     langButton: "عربي",
     langLabel: "التحويل للعربي",
     toDark: "Dark mode",
     toLight: "Light mode"
   }
 };
+
+// التصنيفات: نفس الأسامي اللي في لوحة التحكم (category في products.js)
+const CATEGORIES = [
+  ["sets", "بكجات", "Sets"],
+  ["bodyoud", "بودي عود", "Body Oud"],
+  ["sprays", "بخاخات", "Sprays"],
+  ["blends", "خلطات ودهن", "Blends & oils"]
+];
 
 // اللغة الحالية: "ar" أو "en"
 function lang() {
@@ -157,6 +167,7 @@ function createCard(product) {
   // الكلام اللي البحث بيدوّر فيه (بالعربي والإنجليزي)
   card.dataset.search = normalize([product.name, product.nameEn, product.description,
     product.descriptionEn, product.size, product.sizeEn].join(" "));
+  card.dataset.category = product.category || "";
 
   // --- الصورة ---
   const media = el("div", "card-media");
@@ -290,6 +301,7 @@ function renderProducts() {
 
   // البحث بيستخبى لو مفيش منتجات خالص
   document.getElementById("search-band").hidden = list.length === 0;
+  renderCategoryChips(list);
 
   // زرار «تصفّح العطور» اللي فوق بيودّي لأول قسم ظاهر
   document.getElementById("hero-cta").href = offersCount > 0 ? "#offers" : "#products";
@@ -302,6 +314,35 @@ function renderProducts() {
 const searchInput = document.getElementById("search");
 const searchInfo = document.getElementById("search-info");
 const sectionDefault = { offers: true, products: true };
+const catChips = document.getElementById("cat-chips");
+let activeCat = "";   // "" يعني الكل
+
+// أزرار التصنيفات: بيظهر بس التصنيف اللي فيه منتجات، ولو أقل من تصنيفين الأزرار بتستخبى
+function renderCategoryChips(list) {
+  const counts = {};
+  list.forEach(function (p) { if (p.category) counts[p.category] = (counts[p.category] || 0) + 1; });
+  const cats = CATEGORIES.filter(function (c) { return counts[c[0]]; });
+  if (activeCat && !counts[activeCat]) activeCat = "";
+  catChips.innerHTML = "";
+  catChips.hidden = cats.length < 2;
+  [["", TEXT[lang()].allCats, TEXT[lang()].allCats]].concat(cats).forEach(function (c) {
+    const chip = el("button", "cat-chip", lang() === "en" ? c[2] : c[1]);
+    chip.type = "button";
+    chip.dataset.cat = c[0];
+    chip.setAttribute("aria-pressed", c[0] === activeCat ? "true" : "false");
+    catChips.appendChild(chip);
+  });
+}
+
+catChips.addEventListener("click", function (event) {
+  const chip = event.target.closest(".cat-chip");
+  if (!chip) return;
+  activeCat = chip.dataset.cat;
+  catChips.querySelectorAll(".cat-chip").forEach(function (c) {
+    c.setAttribute("aria-pressed", c === chip ? "true" : "false");
+  });
+  applySearch();
+});
 
 // بيوحّد الكلام علشان البحث يلاقي «اوشن» و«أوشن» زي بعض
 function normalize(text) {
@@ -318,25 +359,29 @@ function normalize(text) {
 function applySearch() {
   const query = searchInput.value.trim();
   const words = normalize(query).split(/\s+/).filter(Boolean);
+  const filtering = words.length > 0 || activeCat !== "";
   const counts = { offers: 0, products: 0 };
 
   ["offers", "products"].forEach(function (id) {
     document.getElementById(id + "-grid").querySelectorAll(".card").forEach(function (card) {
-      const match = words.every(function (w) { return card.dataset.search.indexOf(w) !== -1; });
+      const match = (!activeCat || card.dataset.category === activeCat) &&
+        words.every(function (w) { return card.dataset.search.indexOf(w) !== -1; });
       card.hidden = !match;
       if (match) counts[id]++;
     });
     // وانت بتدوّر، القسم اللي مفيهوش نتايج بيستخبى (من غير ما نلمس القايمة اللي فوق)
-    document.getElementById(id).hidden = words.length ? counts[id] === 0 : !sectionDefault[id];
+    document.getElementById(id).hidden = filtering ? counts[id] === 0 : !sectionDefault[id];
   });
 
   searchInfo.innerHTML = "";
-  searchInfo.hidden = words.length === 0;
-  if (!words.length) return;
+  searchInfo.hidden = !filtering;
+  if (!filtering) return;
   const txt = TEXT[lang()];
   const total = counts.offers + counts.products;
   if (total > 0) {
     searchInfo.textContent = txt.searchCount(total);
+  } else if (!words.length) {
+    searchInfo.textContent = txt.searchCount(0);
   } else {
     searchInfo.appendChild(document.createTextNode(txt.searchNone(query)));
     const link = el("a", "", txt.searchAsk);

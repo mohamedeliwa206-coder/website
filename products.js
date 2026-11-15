@@ -11,6 +11,7 @@
 //  - oldPrice: السعر قبل الخصم، ولو مفيش خصم اكتب 0
 //  - offer: true = يظهر في قسم "عروض الافتتاح" | false = يظهر في قسم "المنتجات"
 //  - available: true = متاح للحجز | false = نفد
+//  - category: التصنيف = "sets" بكجات ومجموعات | "bodyoud" بودي عود | "sprays" بخاخات | "blends" خلطات ودهن
 //  - image: مسار الصورة زي "images/perfume1.jpg"، ولو فاضي "" هيظهر شكل مؤقت
 //  - الحاجات اللي آخرها En دي النسخة الإنجليزي، ولو فاضية هيظهر العربي مكانها
 // =====================================================
@@ -27,6 +28,7 @@ const PRODUCTS = [
     oldPrice: 12200,
     offer: true,
     available: true,
+    category: "sets",
     image: "images/products/musk-set-with-body-musk-spray.jpg"
   },
   {
@@ -40,6 +42,7 @@ const PRODUCTS = [
     oldPrice: 12200,
     offer: true,
     available: true,
+    category: "sets",
     image: "images/products/tola-musk-set.jpg"
   },
   {
@@ -53,6 +56,7 @@ const PRODUCTS = [
     oldPrice: 19500,
     offer: true,
     available: true,
+    category: "sets",
     image: "images/products/arabic-collection-set.jpg"
   },
   {
@@ -66,6 +70,7 @@ const PRODUCTS = [
     oldPrice: 17550,
     offer: true,
     available: true,
+    category: "sets",
     image: "images/products/oud-incense-set.jpg"
   },
   {
@@ -79,6 +84,7 @@ const PRODUCTS = [
     oldPrice: 16900,
     offer: true,
     available: true,
+    category: "sets",
     image: "images/products/body-oud-set.jpg"
   },
   {
@@ -92,6 +98,7 @@ const PRODUCTS = [
     oldPrice: 21750,
     offer: true,
     available: true,
+    category: "sets",
     image: "images/products/blue-star-qurashi-blend-set.jpg"
   },
   {
@@ -105,6 +112,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "bodyoud",
     image: "images/products/silk-body-oud.jpg"
   },
   {
@@ -118,6 +126,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "bodyoud",
     image: "images/products/gold-vanilla-body-oud.jpg"
   },
   {
@@ -131,6 +140,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sets",
     image: "images/products/safari-extreme-set.jpg"
   },
   {
@@ -144,6 +154,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sets",
     image: "images/products/safari-blue-set.jpg"
   },
   {
@@ -157,6 +168,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sets",
     image: "images/products/blue-ocean-set.jpg"
   },
   {
@@ -170,6 +182,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sprays",
     image: "images/products/black-star-him.jpg"
   },
   {
@@ -183,6 +196,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sprays",
     image: "images/products/black-star-her.jpg"
   },
   {
@@ -196,6 +210,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sprays",
     image: "images/products/pink-incense.jpg"
   },
   {
@@ -209,6 +224,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sprays",
     image: "images/products/black-incense.jpg"
   },
   {
@@ -222,6 +238,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "bodyoud",
     image: "images/products/blue-ocean-body-oud.jpg"
   },
   {
@@ -235,6 +252,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "bodyoud",
     image: "images/products/velvet-body-oud.jpg"
   },
   {
@@ -248,6 +266,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "bodyoud",
     image: "images/products/tobacco-body-oud.jpg"
   },
   {
@@ -261,6 +280,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "blends",
     image: "images/products/qurashi-blend.jpg"
   },
   {
@@ -274,6 +294,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "blends",
     image: "images/products/qurashi-blend-blue.jpg"
   },
   {
@@ -287,6 +308,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "blends",
     image: "images/products/crystal-qurashi-blend.jpg"
   },
   {
@@ -300,6 +322,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sprays",
     image: "images/products/safari-extreme.jpg"
   },
   {
@@ -313,6 +336,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "bodyoud",
     image: "images/products/satin-body-oud.jpg"
   },
   {
@@ -326,6 +350,7 @@ const PRODUCTS = [
     oldPrice: 0,
     offer: false,
     available: true,
+    category: "sprays",
     image: "images/products/safari-blue.jpg"
   },
 ];

@@ -27,8 +27,12 @@ const PRODUCT_FIELDS = [
   ["size", "text"], ["sizeEn", "text"],
   ["price", "number"], ["oldPrice", "number"],
   ["offer", "bool"], ["available", "bool"],
+  ["category", "text"],
   ["image", "text"]
 ];
+
+// التصنيفات (لازم تبقى نفس اللي في script.js)
+const CATEGORIES = { sets: "بكجات ومجموعات", bodyoud: "بودي عود", sprays: "بخاخات", blends: "خلطات ودهن" };
 
 // خانات الإعدادات وشرح كل واحدة (بيتكتب كتعليق في settings.js)
 const SETTING_FIELDS = [
@@ -158,6 +162,7 @@ const PRODUCTS_HEADER = [
   "//  - oldPrice: السعر قبل الخصم، ولو مفيش خصم اكتب 0",
   "//  - offer: true = يظهر في قسم \"عروض الافتتاح\" | false = يظهر في قسم \"المنتجات\"",
   "//  - available: true = متاح للحجز | false = نفد",
+  "//  - category: التصنيف = \"sets\" بكجات ومجموعات | \"bodyoud\" بودي عود | \"sprays\" بخاخات | \"blends\" خلطات ودهن",
   "//  - image: مسار الصورة زي \"images/perfume1.jpg\"، ولو فاضي \"\" هيظهر شكل مؤقت",
   "//  - الحاجات اللي آخرها En دي النسخة الإنجليزي، ولو فاضية هيظهر العربي مكانها",
   "// ====================================================="
@@ -553,7 +558,8 @@ function renderProducts() {
 
     const info = el("div", "info");
     info.appendChild(el("strong", "item-name", p.name || "(من غير اسم)"));
-    if (p.size) info.appendChild(el("span", "item-size", p.size));
+    const meta = [p.size, CATEGORIES[p.category] || "من غير تصنيف"].filter(Boolean).join(" · ");
+    info.appendChild(el("span", "item-size" + (p.category ? "" : " item-nocat"), meta));
     const prices = el("div", "item-prices");
     if (p.price > 0) prices.appendChild(el("span", "item-price", formatPrice(p.price)));
     else prices.appendChild(el("span", "item-noprice", "من غير سعر (هيظهر «السعر قريبًا»)"));

@@ -123,12 +123,14 @@ label { display: block; font-weight: 600; font-size: .92rem; }
 label small { font-weight: 400; color: var(--muted); }
 .req { color: var(--red); }
 
-input:not([type="checkbox"]):not([type="file"]), textarea {
+input:not([type="checkbox"]):not([type="file"]), textarea, select {
   display: block; width: 100%; margin-top: 4px;
   min-height: 44px; padding: 8px 12px;
   background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
 }
 textarea { font: inherit; color: inherit; line-height: 1.6; resize: vertical; }
+select { font: inherit; color: inherit; cursor: pointer; }
+select:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px var(--gold-soft); }
 input:focus, textarea:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px var(--gold-soft); }
 
 .grid2 { display: grid; gap: 14px; }
@@ -191,6 +193,7 @@ input:focus, textarea:focus { border-color: var(--gold); outline: none; box-shad
 .info { grid-area: info; min-width: 0; display: grid; gap: 2px; }
 .item-name { font-size: 1.05rem; overflow-wrap: anywhere; }
 .item-size { font-size: .85rem; color: var(--muted); }
+.item-nocat { color: var(--red); }
 .item-prices { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
 .item-price { font-weight: 800; color: var(--gold-dark); }
 .item-old { color: var(--muted); font-size: .85rem; }
