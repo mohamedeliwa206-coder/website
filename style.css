@@ -796,6 +796,191 @@ section[id] { scroll-margin-top: var(--header-h); }
   cursor: pointer;
 }
 
+/* ===== سلة الطلبات ===== */
+.btn-cart {
+  background: transparent;
+  color: var(--gold-dark);
+  border: 1px solid var(--gold);
+}
+.btn-cart:hover { background: var(--gold-soft); }
+.btn-cart.in-cart { background: var(--gold-soft); }
+.card .btn + .btn { margin-top: 6px; }
+
+/* لما السلة يبقى فيها حاجة، الصفحة بتسيب مكان للشريط اللي تحت */
+body.has-cart { padding-bottom: var(--cart-bar-h, 0px); }
+
+.cart-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 50;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: var(--header-bg);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, .08);
+}
+.cart-open {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gold-dark);
+  color: var(--on-gold);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.cart-open:hover { background: var(--gold-hover); }
+.cart-count {
+  min-width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--on-gold);
+  color: var(--gold-dark);
+  font-size: .85rem;
+  font-weight: 800;
+}
+.cart-summary { flex: 1; text-align: start; }
+.cart-cta { white-space: nowrap; }
+
+.cart-dialog {
+  width: min(560px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
+}
+.cart-dialog[open] { display: flex; flex-direction: column; }
+.cart-dialog::backdrop { background: rgba(15, 12, 10, .55); }
+/* على الموبايل: الشاشة بتطلع من تحت */
+@media (max-width: 600px) {
+  .cart-dialog {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 88dvh;
+    margin: auto 0 0;
+    border-radius: 18px 18px 0 0;
+  }
+}
+.cart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.cart-head h2 { margin: 0; font-size: 1.2rem; }
+.cart-x {
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+.cart-items {
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 4px 18px;
+  overflow-y: auto;
+}
+.cart-item {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 6px 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cart-item:last-child { border-bottom: 0; }
+.cart-thumb {
+  grid-row: span 2;
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--media-bg);
+}
+.cart-info { display: grid; min-width: 0; }
+.cart-name { font-weight: 700; font-size: .95rem; line-height: 1.4; }
+.cart-meta { color: var(--muted); font-size: .82rem; }
+.cart-remove {
+  align-self: start;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.cart-qty {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+}
+.cart-qty button {
+  width: 34px;
+  height: 32px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.cart-qty button:disabled { opacity: .3; cursor: not-allowed; }
+.cart-qty span { min-width: 22px; text-align: center; font-weight: 800; }
+.cart-line { font-weight: 800; font-size: .92rem; white-space: nowrap; }
+.cart-foot {
+  display: grid;
+  gap: 10px;
+  padding: 12px 18px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 0 0 18px 18px;
+}
+.cart-totals { display: grid; gap: 4px; }
+.cart-row { display: flex; justify-content: space-between; gap: 12px; font-size: .95rem; }
+.cart-row.total { font-weight: 800; font-size: 1.05rem; }
+.cart-row.deposit { color: var(--gold-dark); font-weight: 700; }
+.cart-row.rest { color: var(--muted); }
+.cart-note { margin: 0; color: var(--muted); font-size: .85rem; }
+.cart-send { width: 100%; }
+.cart-send svg { width: 18px; height: 18px; flex: none; }
+.cart-clear {
+  justify-self: center;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: .88rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 /* ===== الرسالة الصغيرة اللي بتظهر تحت ===== */
 .toast {
   position: fixed;

@@ -437,6 +437,31 @@
     <p class="lightbox-caption" id="lightbox-caption"></p>
   </dialog>
 
+  <!-- ===== سلة الطلبات ===== -->
+  <!-- الشريط اللي تحت: بيظهر أول ما العميل يضيف حاجة للسلة -->
+  <div class="cart-bar" id="cart-bar" hidden>
+    <button type="button" class="cart-open" id="cart-open">
+      <span class="cart-count" id="cart-count">0</span>
+      <span class="cart-summary" id="cart-summary"></span>
+      <span class="cart-cta" id="cart-cta"></span>
+    </button>
+  </div>
+
+  <!-- شاشة السلة -->
+  <dialog class="cart-dialog" id="cart-dialog" aria-labelledby="cart-title">
+    <div class="cart-head">
+      <h2 id="cart-title"></h2>
+      <button type="button" class="cart-x" id="cart-close" aria-label="قفل" data-aria-en="Close">&times;</button>
+    </div>
+    <ul class="cart-items" id="cart-items"></ul>
+    <div class="cart-foot">
+      <div class="cart-totals" id="cart-totals"></div>
+      <p class="cart-note" id="cart-note" hidden></p>
+      <a class="btn btn-wa cart-send" id="cart-send" href="#" target="_blank" rel="noopener"></a>
+      <button type="button" class="cart-clear" id="cart-clear"></button>
+    </div>
+  </dialog>
+
   <!-- رسالة صغيرة بتظهر تحت لثواني (زي «اتنسخ اللينك») -->
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 

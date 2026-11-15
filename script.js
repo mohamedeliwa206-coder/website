@@ -38,6 +38,26 @@ const TEXT = {
     zoom: "كبّر الصورة",
     share: "شارك لينك المنتج",
     copied: "اتنسخ لينك المنتج ✓",
+    addToCart: "أضف للسلة",
+    inCart: "في السلة ✓",
+    added: "اتضاف للسلة ✓",
+    cartTitle: "سلة الطلبات",
+    cartLabel: "السلة",
+    cartCta: "اطلب الكل",
+    cartPriceLater: "السعر هيتأكد",
+    cartTotal: "الإجمالي",
+    cartDeposit: "العربون 50%",
+    cartRest: "الباقي عند الاستلام",
+    cartUnpriced: "فيه منتجات لسه سعرها هيتأكد على واتساب، ومش محسوبة في الإجمالي.",
+    cartSend: "ابعت الطلب على واتساب",
+    cartClear: "فضّي السلة",
+    cartIntro: "السلام عليكم، عايز أحجز الطلب ده:",
+    cartAsk: "السعر؟",
+    cartAskAll: "ممكن تقولّي سعر المنتجات اللي جنبها «السعر؟»",
+    cartMore: "زوّد واحد",
+    cartLess: "قلّل واحد",
+    cartRemove: "شيل من السلة",
+    cartConfirmClear: "هتفضّي السلة كلها. متأكد؟",
     langButton: "EN",
     langLabel: "Switch to English",
     toDark: "الوضع الليلي",
@@ -70,6 +90,26 @@ const TEXT = {
     zoom: "Enlarge image",
     share: "Share product link",
     copied: "Product link copied ✓",
+    addToCart: "Add to cart",
+    inCart: "In cart ✓",
+    added: "Added to cart ✓",
+    cartTitle: "Your order",
+    cartLabel: "Cart",
+    cartCta: "Order all",
+    cartPriceLater: "Price to confirm",
+    cartTotal: "Total",
+    cartDeposit: "Deposit (50%)",
+    cartRest: "Pay on delivery",
+    cartUnpriced: "Some items’ prices will be confirmed on WhatsApp and aren’t included in the total.",
+    cartSend: "Send order on WhatsApp",
+    cartClear: "Empty cart",
+    cartIntro: "Hello, I'd like to pre-order:",
+    cartAsk: "price?",
+    cartAskAll: "Could you tell me the prices of the items marked “price?”",
+    cartMore: "Add one",
+    cartLess: "Remove one",
+    cartRemove: "Remove from cart",
+    cartConfirmClear: "Empty the whole cart?",
     langButton: "عربي",
     langLabel: "التحويل للعربي",
     toDark: "Dark mode",
@@ -259,6 +299,14 @@ function createCard(product) {
   button.appendChild(label);
   body.appendChild(button);
 
+  // --- زرار السلة (للمنتج المتاح بس) ---
+  if (product.available) {
+    const add = el("button", "btn btn-cart");
+    add.type = "button";
+    add.dataset.cart = product.__slug;
+    body.appendChild(add);
+  }
+
   card.appendChild(body);
   return card;
 }
@@ -330,7 +378,11 @@ function renderProducts() {
   // زرار «تصفّح العطور» اللي فوق بيودّي لأول قسم ظاهر
   document.getElementById("hero-cta").href = offersCount > 0 ? "#offers" : "#products";
 
+  productsBySlug = {};
+  list.forEach(function (product) { productsBySlug[product.__slug] = product; });
+
   applySearch();
+  updateCart();
 }
 
 
@@ -523,6 +575,13 @@ function zoomFrom(img) {
 }
 
 document.addEventListener("click", function (event) {
+  const add = event.target.closest("[data-cart]");
+  if (add) {
+    // أول دوسة بتضيف، ولو المنتج في السلة بالفعل بتفتح السلة
+    if (cartQty(add.dataset.cart)) openCart();
+    else addToCart(add.dataset.cart);
+    return;
+  }
   const share = event.target.closest(".share-btn");
   if (share) { shareProduct(share.dataset.slug, share.dataset.name); return; }
   const img = event.target.closest(".card-media img, .review-img");
@@ -539,6 +598,215 @@ lightbox.addEventListener("click", function (event) {
   if (event.target === lightbox || event.target.closest(".lightbox-close")) lightbox.close();
 });
 lightbox.addEventListener("close", function () { lightboxImg.removeAttribute("src"); });
+
+
+// ===== سلة الطلبات =====
+// السلة بتتحفظ على جهاز العميل بس، علشان لو قفل الصفحة ورجع يلاقيها
+const CART_KEY = "teeb-cart";
+const CART_MAX = 20;
+let productsBySlug = {};
+let cart = loadCart();
+const cartBar = document.getElementById("cart-bar");
+const cartDialog = document.getElementById("cart-dialog");
+
+function loadCart() {
+  try {
+    const list = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+    if (!Array.isArray(list)) return [];
+    return list.filter(function (i) { return i && typeof i.id === "string" && Number(i.qty) > 0; })
+      .map(function (i) { return { id: i.id, qty: Math.min(CART_MAX, Math.floor(Number(i.qty))) }; });
+  } catch (e) { return []; }
+}
+
+function saveCart() {
+  try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) {}
+}
+
+function cartQty(id) {
+  const item = cart.filter(function (i) { return i.id === id; })[0];
+  return item ? item.qty : 0;
+}
+
+function addToCart(id) {
+  const item = cart.filter(function (i) { return i.id === id; })[0];
+  if (item) item.qty = Math.min(CART_MAX, item.qty + 1);
+  else cart.push({ id: id, qty: 1 });
+  saveCart();
+  updateCart();
+  showToast(TEXT[lang()].added);
+}
+
+function setQty(id, qty) {
+  cart = cart.map(function (i) { return i.id === id ? { id: id, qty: Math.max(0, Math.min(CART_MAX, qty)) } : i; })
+    .filter(function (i) { return i.qty > 0; });
+  saveCart();
+  updateCart();
+}
+
+// المنتجات اللي في السلة ولسه موجودة ومتاحة على الموقع
+function cartLines() {
+  return cart.map(function (item) { return { item: item, product: productsBySlug[item.id] }; })
+    .filter(function (line) { return line.product && line.product.available; });
+}
+
+function cartTotals(lines) {
+  let total = 0, unpriced = 0, count = 0;
+  lines.forEach(function (line) {
+    const price = Number(line.product.price);
+    count += line.item.qty;
+    if (price > 0) total += price * line.item.qty;
+    else unpriced += line.item.qty;
+  });
+  const deposit = Math.ceil(total / 2);
+  return { total: total, deposit: deposit, rest: total - deposit, unpriced: unpriced, count: count };
+}
+
+function lineLabel(product) {
+  const name = field(product, "name"), size = field(product, "size");
+  return size ? name + " (" + size + ")" : name;
+}
+
+function cartMessage(lines, t) {
+  const words = TEXT[lang()];
+  const rows = lines.map(function (line, i) {
+    const price = Number(line.product.price);
+    return (i + 1) + ". " + lineLabel(line.product) + " × " + line.item.qty + " = " +
+      (price > 0 ? formatPrice(price * line.item.qty) : words.cartAsk);
+  });
+  let message = words.cartIntro + "\n" + rows.join("\n");
+  if (t.total > 0) {
+    message += "\n\n" + words.cartTotal + ": " + formatPrice(t.total) +
+      "\n" + words.cartDeposit + ": " + formatPrice(t.deposit);
+  }
+  if (t.unpriced) message += "\n\n" + words.cartAskAll;
+  return message;
+}
+
+function updateCart() {
+  const words = TEXT[lang()];
+  // لو منتج اتشال من الموقع أو نفد، بيتشال من السلة
+  const lines = cartLines();
+  if (lines.length !== cart.length) { cart = lines.map(function (l) { return l.item; }); saveCart(); }
+  const t = cartTotals(lines);
+
+  // زراير الكروت
+  document.querySelectorAll("[data-cart]").forEach(function (button) {
+    const inCart = cartQty(button.dataset.cart) > 0;
+    button.textContent = inCart ? words.inCart : "+ " + words.addToCart;
+    button.classList.toggle("in-cart", inCart);
+  });
+
+  // الشريط اللي تحت
+  const show = t.count > 0;
+  cartBar.hidden = !show;
+  document.getElementById("cart-count").textContent = t.count;
+  document.getElementById("cart-summary").textContent = words.cartLabel + " · " +
+    (t.total > 0 ? formatPrice(t.total) : words.cartPriceLater);
+  document.getElementById("cart-cta").textContent = words.cartCta;
+  document.getElementById("cart-open").setAttribute("aria-label", words.cartTitle);
+  document.body.classList.toggle("has-cart", show);
+  root.style.setProperty("--cart-bar-h", show ? cartBar.offsetHeight + "px" : "0px");
+
+  if (cartDialog.open) {
+    if (show) renderCartDialog(lines, t);
+    else cartDialog.close();
+  }
+}
+
+function renderCartDialog(lines, t) {
+  const words = TEXT[lang()];
+  document.getElementById("cart-title").textContent = words.cartTitle;
+  const list = document.getElementById("cart-items");
+  list.innerHTML = "";
+  lines.forEach(function (line) {
+    const p = line.product, id = line.item.id, price = Number(p.price);
+    const li = el("li", "cart-item");
+    if (p.image) {
+      const img = el("img", "cart-thumb");
+      img.src = p.image;
+      img.alt = "";
+      li.appendChild(img);
+    } else {
+      li.appendChild(el("span", "cart-thumb"));
+    }
+    const info = el("div", "cart-info");
+    info.appendChild(el("span", "cart-name", field(p, "name")));
+    info.appendChild(el("span", "cart-meta", [field(p, "size"), price > 0 ? formatPrice(price) : words.cartPriceLater].filter(Boolean).join(" · ")));
+    li.appendChild(info);
+    const remove = el("button", "cart-remove", "×");
+    remove.type = "button";
+    remove.dataset.act = "remove";
+    remove.dataset.id = id;
+    remove.setAttribute("aria-label", words.cartRemove + ": " + field(p, "name"));
+    li.appendChild(remove);
+    const qty = el("div", "cart-qty");
+    [["dec", "−", words.cartLess, line.item.qty <= 1], ["n", String(line.item.qty)], ["inc", "+", words.cartMore, line.item.qty >= CART_MAX]].forEach(function (b) {
+      if (b[0] === "n") { qty.appendChild(el("span", "", b[1])); return; }
+      const btn = el("button", "", b[1]);
+      btn.type = "button";
+      btn.dataset.act = b[0];
+      btn.dataset.id = id;
+      btn.setAttribute("aria-label", b[2]);
+      btn.disabled = b[3];
+      qty.appendChild(btn);
+    });
+    li.appendChild(qty);
+    li.appendChild(el("span", "cart-line", price > 0 ? formatPrice(price * line.item.qty) : words.cartAsk));
+    list.appendChild(li);
+  });
+
+  const totals = document.getElementById("cart-totals");
+  totals.innerHTML = "";
+  if (t.total > 0) {
+    [["total", words.cartTotal, t.total], ["deposit", words.cartDeposit, t.deposit], ["rest", words.cartRest, t.rest]].forEach(function (r) {
+      const row = el("div", "cart-row " + r[0]);
+      row.appendChild(el("span", "", r[1]));
+      row.appendChild(el("span", "", formatPrice(r[2])));
+      totals.appendChild(row);
+    });
+  }
+  const note = document.getElementById("cart-note");
+  note.textContent = words.cartUnpriced;
+  note.hidden = !t.unpriced;
+
+  const send = document.getElementById("cart-send");
+  send.innerHTML = WA_ICON;
+  send.appendChild(el("span", "", words.cartSend));
+  send.href = whatsappLink(cartMessage(lines, t));
+  document.getElementById("cart-clear").textContent = words.cartClear;
+}
+
+function openCart() {
+  const lines = cartLines();
+  if (!lines.length) return;
+  renderCartDialog(lines, cartTotals(lines));
+  if (typeof cartDialog.showModal === "function") cartDialog.showModal();
+}
+
+document.getElementById("cart-open").addEventListener("click", openCart);
+document.getElementById("cart-close").addEventListener("click", function () { cartDialog.close(); });
+cartDialog.addEventListener("click", function (event) {
+  if (event.target === cartDialog) { cartDialog.close(); return; }   // الدوسة برة الشاشة
+  const btn = event.target.closest("[data-act]");
+  if (!btn) return;
+  const id = btn.dataset.id, qty = cartQty(id);
+  if (btn.dataset.act === "inc") setQty(id, qty + 1);
+  else if (btn.dataset.act === "dec") setQty(id, qty - 1);
+  else if (btn.dataset.act === "remove") setQty(id, 0);
+});
+document.getElementById("cart-clear").addEventListener("click", function () {
+  if (!confirm(TEXT[lang()].cartConfirmClear)) return;
+  cart = [];
+  saveCart();
+  updateCart();
+});
+// لو السلة اتغيرت من تاب تاني في نفس المتصفح
+window.addEventListener("storage", function (event) {
+  if (event.key === CART_KEY) { cart = loadCart(); updateCart(); }
+});
+window.addEventListener("resize", function () {
+  if (!cartBar.hidden) root.style.setProperty("--cart-bar-h", cartBar.offsetHeight + "px");
+});
 
 
 // ===== آراء العملاء: سكرين شوتس من reviews.js =====
