@@ -63,7 +63,8 @@
     <section id="app" hidden>
       <div class="tabs" role="tablist">
         <button type="button" role="tab" id="tab-products" aria-controls="panel-products" aria-selected="true">المنتجات</button>
-        <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false">إعدادات الموقع</button>
+        <button type="button" role="tab" id="tab-reviews" aria-controls="panel-reviews" aria-selected="false">آراء العملاء</button>
+        <button type="button" role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false">الإعدادات</button>
       </div>
 
       <!-- المنتجات -->
@@ -75,6 +76,22 @@
         <p class="note">أي تعديل هنا مش بيظهر للعملاء غير لما تدوس <strong>«نشر على الموقع»</strong> تحت.</p>
         <ul id="product-list" class="product-list"></ul>
         <p id="empty" class="empty" hidden>مفيش منتجات لسه. دوس «إضافة منتج».</p>
+      </div>
+
+      <!-- آراء العملاء -->
+      <div id="panel-reviews" role="tabpanel" aria-labelledby="tab-reviews" hidden>
+        <div class="panel-head">
+          <h2>آراء العملاء <span id="reviews-count" class="count"></span></h2>
+          <label class="btn btn-gold file-btn">
+            + إضافة سكرين شوت
+            <input type="file" id="review-input" accept="image/*" multiple class="visually-hidden">
+          </label>
+        </div>
+        <p class="note">حط سكرين شوتس <strong>حقيقية</strong> من رسايل عملائك بس. غطّي اسم العميل ورقم تليفونه قبل ما ترفعها، إلا لو هو موافق إنهم يظهروا.
+          القسم بيظهر في الموقع أول ما تضيف أول صورة وتدوس <strong>«نشر على الموقع»</strong>.</p>
+        <p id="reviews-msg" class="hint" role="status"></p>
+        <ul id="review-list" class="review-list"></ul>
+        <p id="reviews-empty" class="empty">مفيش سكرين شوتس لسه، فقسم «آراء العملاء» مستخبي من الموقع.</p>
       </div>
 
       <!-- الإعدادات -->

@@ -218,6 +218,24 @@ input:focus, textarea:focus { border-color: var(--gold); outline: none; box-shad
 .act-edit { color: var(--gold-dark); margin-inline-start: auto; }
 .act-delete { color: var(--red); }
 
+/* ===== آراء العملاء ===== */
+.review-list {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px;
+}
+.review-item {
+  display: grid; gap: 8px; padding: 8px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.review-thumb {
+  width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top;
+  border-radius: 10px; background: var(--gold-soft); display: block;
+}
+.review-thumb.is-empty { display: grid; place-items: center; color: var(--gold); }
+.review-thumb.is-empty svg { width: 32px; height: auto; }
+.review-item .actions { justify-content: space-between; }
+
 @media (min-width: 760px) {
   .item {
     grid-template-columns: 72px 1fr auto auto;

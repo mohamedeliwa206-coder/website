@@ -299,7 +299,7 @@
     <!-- =====================================================
          6) آراء العملاء: سكرين شوتس من رسايل العملاء
          ===================================================== -->
-    <section id="reviews" class="section">
+    <section id="reviews" class="section" hidden>
       <div class="container">
         <div class="section-head">
           <h2><span lang="ar">آراء العملاء</span><span lang="en">Customer reviews</span></h2>
@@ -310,18 +310,11 @@
         </div>
 
         <!--
-          لما يبقى عندك سكرين شوت حقيقي من عميل:
-          1. حط الصورة في فولدر images باسم زي review1.jpg
-          2. امسح السطر اللي فيه class="review-placeholder" كله
-          3. وحط مكانه السطر ده:
-             <img class="review-img" src="images/review1.jpg" alt="رسالة من عميل" loading="lazy">
-          (متحطش أي تقييم مش حقيقي)
+          السكرين شوتس بتتضاف من لوحة التحكم (تاب «آراء العملاء») وبتتحفظ في ملف reviews.js.
+          القسم ده واللينك بتاعه فوق بيستخبوا لوحدهم لحد ما تضيف أول صورة.
+          (متحطش أي رأي مش حقيقي)
         -->
-        <div class="reviews-grid">
-          <div class="review-placeholder"><span lang="ar">هنا هيتحط سكرين شوت من رسالة عميل</span><span lang="en">A customer message screenshot will go here</span></div>
-          <div class="review-placeholder"><span lang="ar">هنا هيتحط سكرين شوت من رسالة عميل</span><span lang="en">A customer message screenshot will go here</span></div>
-          <div class="review-placeholder"><span lang="ar">هنا هيتحط سكرين شوت من رسالة عميل</span><span lang="en">A customer message screenshot will go here</span></div>
-        </div>
+        <div class="reviews-grid" id="reviews-grid"></div>
       </div>
     </section>
 
@@ -466,6 +459,7 @@
   <!-- الإعدادات ولستة المنتجات لازم يتحملوا الأول، وبعدهم كود الموقع -->
   <script src="settings.js"></script>
   <script src="products.js"></script>
+  <script src="reviews.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

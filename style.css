@@ -677,19 +677,6 @@ section[id] { scroll-margin-top: var(--header-h); }
   scroll-snap-align: center;
 }
 
-.review-placeholder {
-  aspect-ratio: 3 / 4;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  border: 2px dashed var(--line);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--muted);
-  font-size: .9rem;
-  text-align: center;
-}
-
 .review-img {
   width: 100%;
   height: auto;

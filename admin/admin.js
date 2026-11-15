@@ -10,11 +10,15 @@ const REPO = { owner: "mohamedeliwa206-coder", name: "website", branch: "main" }
 const API = "https://api.github.com";
 const TOKEN_KEY = "teeb-admin-token";
 
-// الصور اللي بتترفع من اللوحة بتتحط في الفولدر ده
+// الصور اللي بتترفع من اللوحة بتتحط في الفولدرات دي
 const IMAGE_FOLDER = "images/products/";
+const REVIEW_FOLDER = "images/reviews/";
 // أقصى مقاس للصورة بعد التصغير (بالبكسل)
 const MAX_WIDTH = 1000;
 const MAX_HEIGHT = 1250;
+// سكرين شوتس آراء العملاء بتبقى طويلة، فبنسيبلها طول أكبر
+const REVIEW_MAX_WIDTH = 900;
+const REVIEW_MAX_HEIGHT = 1800;
 
 // خانات كل منتج بالترتيب اللي بتتكتب بيه في products.js
 const PRODUCT_FIELDS = [
@@ -43,9 +47,11 @@ const state = {
   headSha: "",          // آخر نسخة من الموقع على GitHub
   productsSha: null,    // نسخة products.js اللي اتحملت
   settingsSha: null,    // نسخة settings.js اللي اتحملت
+  reviewsSha: null,     // نسخة reviews.js اللي اتحملت
   products: [],         // المنتجات بعد تعديلاتك
   settings: {},         // الإعدادات بعد تعديلاتك
-  saved: { products: "[]", settings: "{}", images: [] }, // آخر حاجة اتنشرت
+  reviews: [],          // صور آراء العملاء بعد تعديلاتك
+  saved: { products: "[]", settings: "{}", reviews: "[]", images: [] }, // آخر حاجة اتنشرت
   newImages: {},        // صور جديدة لسه متنشرتش: المسار ← الصورة
   previews: {},         // روابط مؤقتة علشان نعرض الصور الجديدة
   busy: false
@@ -200,7 +206,24 @@ function settingsFile(settings) {
   return lines.join("\n") + "\n";
 }
 
-// بيشغّل ملف (products.js أو settings.js) ويطلّع منه المتغير اللي جواه
+const REVIEWS_HEADER = [
+  "// =====================================================",
+  "//  سكرين شوتس آراء العملاء",
+  "//  الأسهل تضيفها وتمسحها من لوحة التحكم: (لينك موقعك)/admin ← تاب «آراء العملاء»",
+  "//  الملف ده بيتكتب لوحده من هناك.",
+  "//  لو اللستة فاضية، قسم «آراء العملاء» بيستخبى من الموقع.",
+  "//  (متحطش أي رأي مش حقيقي)",
+  "// ====================================================="
+];
+
+function reviewsFile(list) {
+  const lines = REVIEWS_HEADER.concat(["", "const REVIEWS = ["]);
+  list.forEach(function (path) { lines.push("  " + JSON.stringify(String(path)) + ","); });
+  lines.push("];");
+  return lines.join("\n") + "\n";
+}
+
+// بيشغّل ملف (products.js أو settings.js أو reviews.js) ويطلّع منه المتغير اللي جواه
 function readJsFile(text, name) {
   // eslint-disable-next-line no-new-func
   return new Function(text + "\n;return typeof " + name + " === 'undefined' ? undefined : " + name + ";")();
@@ -305,11 +328,27 @@ async function loadData() {
     }
   }
 
+  let reviews = [];
+  const reviewsEntry = head.files["reviews.js"];
+  if (reviewsEntry) {
+    const text = await readBlob(reviewsEntry.sha);
+    let list;
+    try { list = readJsFile(text, "REVIEWS"); } catch (e) { list = undefined; }
+    if (!Array.isArray(list)) {
+      const err = new Error("reviews.js");
+      err.friendly = "ملف reviews.js فيه غلطة كتابة، فاللوحة مش قادرة تقراه. صلّح الغلطة الأول وبعدين افتح اللوحة تاني.";
+      throw err;
+    }
+    reviews = list.filter(function (p) { return typeof p === "string" && p.trim(); }).map(function (p) { return p.trim(); });
+  }
+
   state.headSha = head.commitSha;
   state.productsSha = productsEntry ? productsEntry.sha : null;
   state.settingsSha = settingsEntry ? settingsEntry.sha : null;
+  state.reviewsSha = reviewsEntry ? reviewsEntry.sha : null;
   state.products = products.map(cleanProduct);
   state.settings = cleanSettings(settings);
+  state.reviews = reviews;
   state.newImages = {};
   markSaved();
 }
@@ -319,13 +358,15 @@ function markSaved() {
   state.saved = {
     products: JSON.stringify(state.products),
     settings: JSON.stringify(state.settings),
-    images: state.products.map(function (p) { return p.image; }).filter(Boolean)
+    reviews: JSON.stringify(state.reviews),
+    images: state.products.map(function (p) { return p.image; }).filter(Boolean).concat(state.reviews)
   };
 }
 
 function productsChanged() { return JSON.stringify(state.products) !== state.saved.products; }
 function settingsChanged() { return JSON.stringify(state.settings) !== state.saved.settings; }
-function hasChanges() { return productsChanged() || settingsChanged(); }
+function reviewsChanged() { return JSON.stringify(state.reviews) !== state.saved.reviews; }
+function hasChanges() { return productsChanged() || settingsChanged() || reviewsChanged(); }
 
 
 // ===== النشر =====
@@ -371,14 +412,16 @@ async function publishOnce() {
   // لو المنتجات أو الإعدادات اتغيرت من مكان تاني بعد ما فتحت اللوحة، منكتبش فوقها
   const remoteProducts = head.files["products.js"] ? head.files["products.js"].sha : null;
   const remoteSettings = head.files["settings.js"] ? head.files["settings.js"].sha : null;
-  if (remoteProducts !== state.productsSha || remoteSettings !== state.settingsSha) {
+  const remoteReviews = head.files["reviews.js"] ? head.files["reviews.js"].sha : null;
+  if (remoteProducts !== state.productsSha || remoteSettings !== state.settingsSha || remoteReviews !== state.reviewsSha) {
     const err = new Error("conflict");
-    err.friendly = "المنتجات أو الإعدادات اتعدلت من مكان تاني (جهاز تاني أو VS Code) بعد ما فتحت اللوحة. اعمل تحديث للصفحة (F5) علشان تجيب آخر نسخة، وبعدين اعمل تعديلاتك تاني.";
+    err.friendly = "المنتجات أو الإعدادات أو آراء العملاء اتعدلت من مكان تاني (جهاز تاني أو VS Code) بعد ما فتحت اللوحة. اعمل تحديث للصفحة (F5) علشان تجيب آخر نسخة، وبعدين اعمل تعديلاتك تاني.";
     throw err;
   }
 
   const used = {};
   state.products.forEach(function (p) { if (p.image) used[p.image] = true; });
+  state.reviews.forEach(function (path) { used[path] = true; });
   const changes = [];
 
   // 1) الصور الجديدة
@@ -389,10 +432,11 @@ async function publishOnce() {
     changes.push({ path: path, mode: "100644", type: "blob", sha: blob.sha });
   }
 
-  // 2) صور المنتجات اللي اتمسحت أو اتغيرت (من فولدر اللوحة بس)
+  // 2) الصور اللي اتمسحت أو اتغيرت (من فولدرات اللوحة بس)
   const removed = {};
   state.saved.images.forEach(function (path) {
-    if (path.indexOf(IMAGE_FOLDER) === 0 && !used[path] && head.files[path] && !removed[path]) {
+    const fromPanel = path.indexOf(IMAGE_FOLDER) === 0 || path.indexOf(REVIEW_FOLDER) === 0;
+    if (fromPanel && !used[path] && head.files[path] && !removed[path]) {
       removed[path] = true;
       changes.push({ path: path, mode: "100644", type: "blob", sha: null });
     }
@@ -404,6 +448,9 @@ async function publishOnce() {
   }
   if (settingsChanged() || !head.files["settings.js"]) {
     changes.push({ path: "settings.js", mode: "100644", type: "blob", content: settingsFile(state.settings) });
+  }
+  if (reviewsChanged() || !head.files["reviews.js"]) {
+    changes.push({ path: "reviews.js", mode: "100644", type: "blob", content: reviewsFile(state.reviews) });
   }
 
   // كل التعديلات في نسخة (commit) واحدة، علشان الموقع يتحدث مرة واحدة
@@ -420,6 +467,7 @@ async function publishOnce() {
   state.headSha = commit.sha;
   state.productsSha = top["products.js"] || null;
   state.settingsSha = top["settings.js"] || null;
+  state.reviewsSha = top["reviews.js"] || null;
   state.newImages = {};
   markSaved();
 }
@@ -428,12 +476,14 @@ async function publishOnce() {
 // ===== الصور =====
 
 // بتصغّر الصورة لحد 1000 بكسل عرض وبتحولها JPG خفيف
-function compressImage(file) {
+function compressImage(file, maxWidth, maxHeight) {
+  maxWidth = maxWidth || MAX_WIDTH;
+  maxHeight = maxHeight || MAX_HEIGHT;
   return new Promise(function (resolve, reject) {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = function () {
-      const scale = Math.min(1, MAX_WIDTH / img.naturalWidth, MAX_HEIGHT / img.naturalHeight);
+      const scale = Math.min(1, maxWidth / img.naturalWidth, maxHeight / img.naturalHeight);
       const canvas = document.createElement("canvas");
       canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
       canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
@@ -702,6 +752,77 @@ editor.addEventListener("click", function (event) {
 $("add-product").addEventListener("click", function () { if (!state.busy) openEditor(-1); });
 
 
+// ===== آراء العملاء =====
+
+function renderReviews() {
+  const list = $("review-list");
+  list.innerHTML = "";
+  $("reviews-count").textContent = state.reviews.length ? "(" + state.reviews.length + ")" : "";
+  $("reviews-empty").hidden = state.reviews.length > 0;
+
+  state.reviews.forEach(function (path, i) {
+    const item = el("li", "review-item");
+    item.dataset.index = i;
+    item.appendChild(makeImage(path, "review-thumb"));
+    const actions = el("div", "actions");
+    [
+      ["up", "→", "قدّمها", i === 0],
+      ["down", "←", "أخّرها", i === state.reviews.length - 1],
+      ["delete", "حذف", "", false]
+    ].forEach(function (a) {
+      const b = el("button", "act act-" + a[0], a[1]);
+      b.type = "button";
+      b.dataset.action = a[0];
+      if (a[2]) b.setAttribute("aria-label", a[2]);
+      b.disabled = a[3];
+      actions.appendChild(b);
+    });
+    item.appendChild(actions);
+    list.appendChild(item);
+  });
+}
+
+$("review-list").addEventListener("click", function (event) {
+  const button = event.target.closest("button[data-action]");
+  if (!button || state.busy) return;
+  const index = Number(button.closest(".review-item").dataset.index);
+  const action = button.dataset.action;
+  if (action === "up" && index > 0) {
+    state.reviews.splice(index - 1, 0, state.reviews.splice(index, 1)[0]);
+  } else if (action === "down" && index < state.reviews.length - 1) {
+    state.reviews.splice(index + 1, 0, state.reviews.splice(index, 1)[0]);
+  } else if (action === "delete") {
+    if (!confirm("متأكد إنك عايز تمسح السكرين شوت ده؟\n(مش هيتمسح من الموقع غير لما تدوس نشر)")) return;
+    state.reviews.splice(index, 1);
+  }
+  afterEdit();
+});
+
+$("review-input").addEventListener("change", async function () {
+  const files = Array.prototype.slice.call(this.files || []);
+  this.value = "";
+  if (!files.length || state.busy) return;
+  const msg = $("reviews-msg");
+  let added = 0, failed = 0;
+  for (let i = 0; i < files.length; i++) {
+    msg.textContent = "بنصغّر الصور... (" + (i + 1) + " من " + files.length + ")";
+    try {
+      const blob = await compressImage(files[i], REVIEW_MAX_WIDTH, REVIEW_MAX_HEIGHT);
+      const path = REVIEW_FOLDER + "review-" + Date.now().toString(36) + i + ".jpg";
+      state.newImages[path] = blob;
+      state.previews[path] = URL.createObjectURL(blob);
+      state.reviews.push(path);
+      added++;
+    } catch (e) {
+      failed++;
+    }
+  }
+  msg.textContent = (added ? "اتضاف " + added + " ✓ متنساش تدوس «نشر على الموقع»." : "") +
+    (failed ? " فيه " + failed + " ملف مش صورة أو مش راضي يفتح." : "");
+  afterEdit();
+});
+
+
 // ===== الإعدادات =====
 
 const settingsForm = $("settings-form");
@@ -747,7 +868,7 @@ function settingsProblem() {
 // ===== التابات وشريط النشر =====
 
 function showTab(name) {
-  ["products", "settings"].forEach(function (tab) {
+  ["products", "reviews", "settings"].forEach(function (tab) {
     const active = tab === name;
     $("tab-" + tab).setAttribute("aria-selected", active ? "true" : "false");
     $("panel-" + tab).hidden = !active;
@@ -755,6 +876,7 @@ function showTab(name) {
 }
 
 $("tab-products").addEventListener("click", function () { showTab("products"); });
+$("tab-reviews").addEventListener("click", function () { showTab("reviews"); });
 $("tab-settings").addEventListener("click", function () { showTab("settings"); });
 
 function setStatus(text, kind) {
@@ -781,6 +903,7 @@ function updatePublishBar() {
 
 function renderAll() {
   renderProducts();
+  renderReviews();
   renderSettings();
   updatePublishBar();
 }
@@ -797,6 +920,7 @@ $("discard").addEventListener("click", function () {
   if (!confirm("هتلغي كل التعديلات اللي لسه متنشرتش. متأكد؟")) return;
   state.products = JSON.parse(state.saved.products);
   state.settings = JSON.parse(state.saved.settings);
+  state.reviews = JSON.parse(state.saved.reviews);
   state.newImages = {};
   setStatus("", "");
   renderAll();
@@ -878,6 +1002,7 @@ $("logout").addEventListener("click", function () {
   writeToken("");
   state.products = [];
   state.settings = {};
+  state.reviews = [];
   markSaved();
   location.reload();
 });

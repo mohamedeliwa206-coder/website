@@ -33,6 +33,7 @@ const TEXT = {
     searchNone: function (q) { return "مفيش منتجات فيها «" + q + "». "; },
     searchAsk: "ابعتلنا اسم العطر على واتساب ونشوفهولك",
     waSearch: function (q) { return "السلام عليكم، بدوّر على عطر: " + q; },
+    reviewAlt: "رسالة من عميل",
     langButton: "EN",
     langLabel: "Switch to English",
     toDark: "الوضع الليلي",
@@ -60,6 +61,7 @@ const TEXT = {
     searchNone: function (q) { return "No products match “" + q + "”. "; },
     searchAsk: "Send us the perfume name on WhatsApp and we’ll check for you",
     waSearch: function (q) { return "Hello, I'm looking for: " + q; },
+    reviewAlt: "A message from a customer",
     langButton: "عربي",
     langLabel: "التحويل للعربي",
     toDark: "Dark mode",
@@ -357,6 +359,24 @@ searchInput.addEventListener("keydown", function (event) {
 });
 
 
+// ===== آراء العملاء: سكرين شوتس من reviews.js =====
+// لو مفيش ولا صورة، القسم واللينك بتاعه فوق بيستخبوا
+function renderReviews() {
+  const list = typeof REVIEWS !== "undefined" && Array.isArray(REVIEWS) ? REVIEWS.filter(Boolean) : [];
+  const grid = document.getElementById("reviews-grid");
+  grid.innerHTML = "";
+  list.forEach(function (path) {
+    const img = el("img", "review-img");
+    img.src = path;
+    img.alt = TEXT[lang()].reviewAlt;
+    img.loading = "lazy";
+    img.onerror = function () { img.remove(); };
+    grid.appendChild(img);
+  });
+  showSection("reviews", list.length > 0);
+}
+
+
 // ===== 3) زرار اللغة =====
 const langButton = document.getElementById("lang-toggle");
 
@@ -381,6 +401,7 @@ function applyLanguage(newLang) {
 
   applySettings();
   renderProducts();
+  renderReviews();
   updateThemeButton();
 }
 
