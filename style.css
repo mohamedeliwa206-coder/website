@@ -627,6 +627,36 @@ section[id] { scroll-margin-top: var(--header-h); }
 }
 .card .btn svg { width: 17px; height: 17px; flex: none; }
 
+/* زرار مشاركة لينك المنتج (فوق الصورة من الناحية التانية) */
+.share-btn {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .9);
+  color: var(--gold-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .14);
+  cursor: pointer;
+}
+.share-btn svg { width: 17px; height: 17px; }
+.share-btn:hover { background: #fff; }
+
+/* الصورة بتكبر لما تدوس عليها */
+.card-media img, .review-img { cursor: zoom-in; }
+
+/* المنتج اللي اتفتح من لينكه: إطار دهبي لثواني */
+.card.is-highlight { animation: card-highlight 2.6s ease; }
+@keyframes card-highlight {
+  0%, 65% { box-shadow: 0 0 0 3px var(--gold), var(--shadow); }
+  100% { box-shadow: var(--shadow); }
+}
+
 /* المنتج اللي نفد: صورته باهتة شوية */
 .card.is-soldout .card-media { filter: grayscale(.7); opacity: .7; }
 
@@ -715,6 +745,72 @@ section[id] { scroll-margin-top: var(--header-h); }
   height: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
+}
+
+
+/* ===== تكبير الصورة ===== */
+.lightbox {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 60px 16px 24px;
+  border: 0;
+  background: transparent;
+}
+.lightbox[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.lightbox::backdrop { background: rgba(15, 12, 10, .95); }
+.lightbox img {
+  max-width: min(100%, 760px);
+  max-height: calc(100dvh - 150px);
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+}
+.lightbox-caption {
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  text-align: center;
+}
+.lightbox-close {
+  position: fixed;
+  top: 12px;
+  inset-inline-end: 12px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  color: #fff;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ===== الرسالة الصغيرة اللي بتظهر تحت ===== */
+.toast {
+  position: fixed;
+  inset-inline: 16px;
+  bottom: calc(20px + var(--cart-bar-h, 0px));
+  z-index: 60;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: .92rem;
+  box-shadow: var(--shadow);
 }
 
 

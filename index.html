@@ -430,6 +430,16 @@
 
   </main>
 
+  <!-- تكبير الصورة: بيفتح لما تدوس على صورة منتج أو صورة رأي عميل -->
+  <dialog class="lightbox" id="lightbox" aria-label="الصورة بحجم كبير" data-aria-en="Enlarged image">
+    <button type="button" class="lightbox-close" aria-label="قفل" data-aria-en="Close">&times;</button>
+    <img id="lightbox-img" alt="">
+    <p class="lightbox-caption" id="lightbox-caption"></p>
+  </dialog>
+
+  <!-- رسالة صغيرة بتظهر تحت لثواني (زي «اتنسخ اللينك») -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
   <!-- =====================================================
        9) الفوتر: آخر الصفحة
        ===================================================== -->

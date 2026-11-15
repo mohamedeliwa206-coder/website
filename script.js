@@ -35,6 +35,9 @@ const TEXT = {
     waSearch: function (q) { return "السلام عليكم، بدوّر على عطر: " + q; },
     reviewAlt: "رسالة من عميل",
     allCats: "الكل",
+    zoom: "كبّر الصورة",
+    share: "شارك لينك المنتج",
+    copied: "اتنسخ لينك المنتج ✓",
     langButton: "EN",
     langLabel: "Switch to English",
     toDark: "الوضع الليلي",
@@ -64,6 +67,9 @@ const TEXT = {
     waSearch: function (q) { return "Hello, I'm looking for: " + q; },
     reviewAlt: "A message from a customer",
     allCats: "All",
+    zoom: "Enlarge image",
+    share: "Share product link",
+    copied: "Product link copied ✓",
     langButton: "عربي",
     langLabel: "التحويل للعربي",
     toDark: "Dark mode",
@@ -118,6 +124,9 @@ function el(tag, className, text) {
 // أيقونة الواتساب اللي جوه الزراير
 const WA_ICON = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>';
 
+// أيقونة المشاركة اللي على صورة المنتج
+const SHARE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>';
+
 // الشكل المؤقت (زجاجة عطر) اللي بيظهر لحد ما تحط صورة حقيقية
 const BOTTLE_PLACEHOLDER = '<svg viewBox="0 0 80 120" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" aria-hidden="true"><rect x="30" y="6" width="20" height="14" rx="3"/><path d="M35 20v10M45 20v10"/><rect x="12" y="30" width="56" height="84" rx="14"/><path d="M26 76h28M30 86h20" stroke-linecap="round" opacity=".6"/></svg>';
 
@@ -163,6 +172,7 @@ function createCard(product) {
   const description = field(product, "description");
 
   const card = el("article", "card");
+  card.id = "p-" + product.__slug;   // علشان لينك المنتج يفتح عليه على طول
   if (!product.available) card.classList.add("is-soldout");
   // الكلام اللي البحث بيدوّر فيه (بالعربي والإنجليزي)
   card.dataset.search = normalize([product.name, product.nameEn, product.description,
@@ -176,12 +186,25 @@ function createCard(product) {
     img.src = product.image;
     img.alt = name;
     img.loading = "lazy";
+    // الصورة بتكبر لما تدوس عليها
+    img.tabIndex = 0;
+    img.setAttribute("role", "button");
+    img.setAttribute("aria-label", words.zoom + ": " + name);
     // لو مسار الصورة غلط، يظهر الشكل المؤقت بدل صورة مكسورة
     img.onerror = function () { img.replaceWith(makePlaceholder()); };
     media.appendChild(img);
   } else {
     media.appendChild(makePlaceholder());
   }
+
+  // --- زرار مشاركة لينك المنتج ---
+  const share = el("button", "share-btn");
+  share.type = "button";
+  share.dataset.slug = product.__slug;
+  share.dataset.name = name;
+  share.setAttribute("aria-label", words.share + ": " + name);
+  share.innerHTML = SHARE_ICON;
+  media.appendChild(share);
 
   // --- شارة "عرض" ---
   if (product.offer) media.appendChild(el("span", "badge", words.offer));
@@ -260,6 +283,7 @@ function renderProducts() {
   const list = fileOk ? PRODUCTS : [];
   let offersCount = 0;
   let productsCount = 0;
+  assignSlugs(list);
 
   list.forEach(function (product) {
     if (product.offer) {
@@ -404,6 +428,119 @@ searchInput.addEventListener("keydown", function (event) {
 });
 
 
+// ===== لينك لكل منتج =====
+// كل منتج بياخد اسم إنجليزي قصير (من الاسم الإنجليزي أو اسم الصورة) علشان اللينك يبقى زي:
+// (لينك موقعك)/#p-silk-body-oud
+function slugify(text) {
+  return String(text || "").toLowerCase().replace(/\.[a-z]+$/, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50);
+}
+
+function assignSlugs(list) {
+  const used = {};
+  list.forEach(function (product, i) {
+    const image = String(product.image || "").split("/").pop();
+    let slug = slugify(product.nameEn) || slugify(image) || "item-" + (i + 1);
+    let n = 2;
+    while (used[slug]) slug = slug.replace(/-\d+$/, "") + "-" + n++;
+    used[slug] = true;
+    product.__slug = slug;
+  });
+}
+
+function productUrl(slug) {
+  return location.href.split("#")[0] + "#p-" + slug;
+}
+
+// رسالة صغيرة تحت لثانيتين
+let toastTimer = 0;
+function showToast(text) {
+  const toast = document.getElementById("toast");
+  toast.textContent = text;
+  toast.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { toast.hidden = true; }, 2200);
+}
+
+function shareProduct(slug, name) {
+  const url = productUrl(slug);
+  // على الموبايل بتفتح قايمة المشاركة (واتساب، إنستجرام...)، وعلى الكمبيوتر بينسخ اللينك
+  if (navigator.share) {
+    navigator.share({ title: name, url: url }).catch(function () {});
+  } else if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(url).then(function () { showToast(TEXT[lang()].copied); },
+      function () { window.prompt(TEXT[lang()].share, url); });
+  } else {
+    window.prompt(TEXT[lang()].share, url);
+  }
+}
+
+// لو حد فتح لينك منتج: نشيل أي فلتر، وننزل للمنتج ونعلّم عليه
+function openProductFromHash() {
+  if (location.hash.indexOf("#p-") !== 0) return;
+  const card = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (!card) return;
+  if (searchInput.value || activeCat) {
+    searchInput.value = "";
+    activeCat = "";
+    renderProducts();
+  }
+  const id = card.id;
+  function jump() {
+    const target = document.getElementById(id);
+    if (target) target.scrollIntoView({ block: "center", behavior: "instant" });
+  }
+  jump();
+  // الخط بيحمّل بعد شوية وبيغيّر طول الكلام، فبنظبط المكان تاني بعده
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(jump);
+  if (document.readyState !== "complete") window.addEventListener("load", jump, { once: true });
+
+  const target = document.getElementById(id);
+  target.classList.remove("is-highlight");
+  void target.offsetWidth;   // علشان العلامة تتعاد لو دوس على نفس اللينك تاني
+  target.classList.add("is-highlight");
+}
+window.addEventListener("hashchange", openProductFromHash);
+
+
+// ===== تكبير الصورة =====
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxCaption = document.getElementById("lightbox-caption");
+
+function openLightbox(src, caption) {
+  if (typeof lightbox.showModal !== "function") { window.open(src, "_blank"); return; }
+  lightboxImg.src = src;
+  lightboxImg.alt = caption || "";
+  lightboxCaption.textContent = caption || "";
+  lightboxCaption.hidden = !caption;
+  lightbox.showModal();
+}
+
+function zoomFrom(img) {
+  const card = img.closest(".card");
+  openLightbox(img.currentSrc || img.src, card ? card.querySelector(".card-title").textContent : "");
+}
+
+document.addEventListener("click", function (event) {
+  const share = event.target.closest(".share-btn");
+  if (share) { shareProduct(share.dataset.slug, share.dataset.name); return; }
+  const img = event.target.closest(".card-media img, .review-img");
+  if (img) zoomFrom(img);
+});
+document.addEventListener("keydown", function (event) {
+  if ((event.key === "Enter" || event.key === " ") && event.target.matches && event.target.matches(".card-media img, .review-img")) {
+    event.preventDefault();
+    zoomFrom(event.target);
+  }
+});
+// الدوسة على الخلفية السودا أو على زرار × بتقفل
+lightbox.addEventListener("click", function (event) {
+  if (event.target === lightbox || event.target.closest(".lightbox-close")) lightbox.close();
+});
+lightbox.addEventListener("close", function () { lightboxImg.removeAttribute("src"); });
+
+
 // ===== آراء العملاء: سكرين شوتس من reviews.js =====
 // لو مفيش ولا صورة، القسم واللينك بتاعه فوق بيستخبوا
 function renderReviews() {
@@ -415,6 +552,8 @@ function renderReviews() {
     img.src = path;
     img.alt = TEXT[lang()].reviewAlt;
     img.loading = "lazy";
+    img.tabIndex = 0;
+    img.setAttribute("role", "button");
     img.onerror = function () { img.remove(); };
     grid.appendChild(img);
   });
@@ -485,3 +624,4 @@ themeButton.addEventListener("click", function () {
 
 // ===== 5) أول ما الصفحة تفتح =====
 applyLanguage(lang());
+openProductFromHash();
