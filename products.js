@@ -194,7 +194,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 3800,
     oldPrice: 6500,
-    offer: false,
+    offer: true,
     available: true,
     category: "sets",
     image: "images/products/shades-of-moon-set.jpg"
@@ -208,7 +208,7 @@ const PRODUCTS = [
     sizeEn: "3 pieces",
     price: 3200,
     oldPrice: 6000,
-    offer: false,
+    offer: true,
     available: true,
     category: "sets",
     image: "images/products/dor-tresor-set.jpg"
@@ -222,7 +222,7 @@ const PRODUCTS = [
     sizeEn: "5 pieces",
     price: 5800,
     oldPrice: 8500,
-    offer: false,
+    offer: true,
     available: true,
     category: "sets",
     image: "images/products/ibraq-set.jpg"
@@ -418,7 +418,7 @@ const PRODUCTS = [
     sizeEn: "75 ml",
     price: 1900,
     oldPrice: 4000,
-    offer: false,
+    offer: true,
     available: true,
     category: "sprays",
     image: "images/products/safari-la-femme.jpg"
@@ -502,7 +502,7 @@ const PRODUCTS = [
     sizeEn: "12 ml",
     price: 1900,
     oldPrice: 4000,
-    offer: false,
+    offer: true,
     available: true,
     category: "musk",
     image: "images/products/rannat-khilkhal-oil-12ml.jpg"
