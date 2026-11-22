@@ -200,9 +200,9 @@ const PRODUCTS = [
     image: "images/products/shades-of-moon-set.jpg"
   },
   {
-    name: "مجموعة دور تريزور",
+    name: "مجموعة ديور تريزور",
     nameEn: "D'Or Trésor Set",
-    description: "3 زجاجات دور تريزور في علبة واحدة:\nزجاجة كبيرة 90 مل\nزجاجتين صغيرين، كل واحدة 20 مل",
+    description: "3 زجاجات ديور تريزور في علبة واحدة:\nزجاجة كبيرة 90 مل\nزجاجتين صغيرين، كل واحدة 20 مل",
     descriptionEn: "3 D'Or Trésor bottles in one box:\nLarge bottle 90 ml\n2 small bottles, 20 ml each",
     size: "3 قطع",
     sizeEn: "3 pieces",
