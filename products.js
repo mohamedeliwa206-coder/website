@@ -202,8 +202,8 @@ const PRODUCTS = [
   {
     name: "مجموعة دور تريزور",
     nameEn: "D'Or Trésor Set",
-    description: "3 زجاجات في علبة واحدة:\nدور تريزور - زجاجة كبيرة\nدور تريزور - زجاجة صغيرة\nزجاجة صغيرة برونزي",
-    descriptionEn: "3 bottles in one box:\nD'Or Trésor - large bottle\nD'Or Trésor - small bottle\nD'Or Trésor - small bottle",
+    description: "3 زجاجات دور تريزور في علبة واحدة:\nزجاجة كبيرة 90 مل\nزجاجتين صغيرين، كل واحدة 20 مل",
+    descriptionEn: "3 D'Or Trésor bottles in one box:\nLarge bottle 90 ml\n2 small bottles, 20 ml each",
     size: "3 قطع",
     sizeEn: "3 pieces",
     price: 3200,
