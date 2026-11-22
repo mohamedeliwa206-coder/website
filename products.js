@@ -130,6 +130,20 @@ const PRODUCTS = [
     image: "images/products/gold-vanilla-body-oud.jpg"
   },
   {
+    name: "بودي عود - اختار ريحتك",
+    nameEn: "Body Oud - Choose Your Scent",
+    description: "عطر من عبدالصمد القرشي\n8 روايح تختار منهم:\nبولد، بيريز، كارداموم، بلو أوشن\nفيلفت، كراميل، توباكو، بيبرز\nاكتب الريحة اللي عايزها في رسالة الواتساب",
+    descriptionEn: "By Abdul Samad Al Qurashi\n8 scents to choose from:\nBold, Berries, Cardamom, Blue Ocean\nVelvet, Caramel, Tobacco, Peppers\nWrite the scent you want in the WhatsApp message",
+    size: "30 مل",
+    sizeEn: "30 ml",
+    price: 1900,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "bodyoud",
+    image: "images/products/body-oud-30ml.jpg"
+  },
+  {
     name: "مجموعة سفاري إكستريم",
     nameEn: "Safari Extreme Set",
     description: "من عبدالصمد القرشي:\nعطر سفاري إكستريم\nمرطب للجسم (150 مل)",
@@ -170,6 +184,48 @@ const PRODUCTS = [
     available: true,
     category: "sets",
     image: "images/products/blue-ocean-set.jpg"
+  },
+  {
+    name: "مجموعة شيدز أوف مون",
+    nameEn: "Shades of Moon Set",
+    description: "3 عطور في علبة واحدة:\nكريسنت مون (الهلال)\nهاف مون (نص القمر)\nفول مون (البدر)",
+    descriptionEn: "3 perfumes in one box:\nCrescent Moon\nHalf Moon\nFull Moon",
+    size: "3 قطع",
+    sizeEn: "3 pieces",
+    price: 3800,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "sets",
+    image: "images/products/shades-of-moon-set.jpg"
+  },
+  {
+    name: "مجموعة دور تريزور",
+    nameEn: "D'Or Trésor Set",
+    description: "3 زجاجات في علبة واحدة:\nدور تريزور - زجاجة كبيرة\nدور تريزور - زجاجة صغيرة\nزجاجة صغيرة برونزي",
+    descriptionEn: "3 bottles in one box:\nD'Or Trésor - large bottle\nD'Or Trésor - small bottle\nSmall bronze bottle",
+    size: "3 قطع",
+    sizeEn: "3 pieces",
+    price: 3200,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "sets",
+    image: "images/products/dor-tresor-set.jpg"
+  },
+  {
+    name: "بكج إبراق",
+    nameEn: "IBRAQ Set",
+    description: "من إبراق IBRAQ:\nسبانيش توباكو - إكستريه دي بارفان (100 مل) × 2\nبلاك دايموند إنسنس (150 مل)\nوايت ريجنت دايموند (150 مل)\nكولينان دايموند (150 مل)",
+    descriptionEn: "By IBRAQ:\nSpanish Tobacco - Extrait de Parfum (100 ml) × 2\nBlack Diamond Incense (150 ml)\nWhite Regent Diamond (150 ml)\nCullinan Diamond (150 ml)",
+    size: "5 قطع",
+    sizeEn: "5 pieces",
+    price: 5800,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "sets",
+    image: "images/products/ibraq-set.jpg"
   },
   {
     name: "بلاك ستار رجالي",
@@ -354,6 +410,20 @@ const PRODUCTS = [
     image: "images/products/safari-blue.jpg"
   },
   {
+    name: "سفاري لا فام",
+    nameEn: "Safari La Femme",
+    description: "بخاخ عطر من عبدالصمد القرشي",
+    descriptionEn: "Perfume spray by Abdul Samad Al Qurashi",
+    size: "",
+    sizeEn: "",
+    price: 1900,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "sprays",
+    image: "images/products/safari-la-femme.jpg"
+  },
+  {
     name: "مكعبات مسك صلب رنة خلخال",
     nameEn: "Rannat Khilkhal Solid Musk Cubes",
     description: "مسك صلب من عبدالصمد القرشي\nعلبة فيها 6 مكعبات",
@@ -422,6 +492,20 @@ const PRODUCTS = [
     available: true,
     category: "musk",
     image: "images/products/rannat-khilkhal-oil.jpg"
+  },
+  {
+    name: "زيت عطري رنة خلخال (تولة)",
+    nameEn: "Rannat Khilkhal Perfume Oil (Tola)",
+    description: "زيت عطري من عبدالصمد القرشي\nتولة كاملة",
+    descriptionEn: "Perfume oil by Abdul Samad Al Qurashi\nFull tola",
+    size: "12 مل",
+    sizeEn: "12 ml",
+    price: 1900,
+    oldPrice: 0,
+    offer: false,
+    available: true,
+    category: "musk",
+    image: "images/products/rannat-khilkhal-oil-12ml.jpg"
   },
   {
     name: "مسك أبيض للجسم",
