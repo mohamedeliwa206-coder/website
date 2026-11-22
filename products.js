@@ -138,7 +138,7 @@ const PRODUCTS = [
     sizeEn: "30 ml",
     price: 1900,
     oldPrice: 3000,
-    offer: false,
+    offer: true,
     available: true,
     category: "bodyoud",
     image: "images/products/body-oud-30ml.jpg"
